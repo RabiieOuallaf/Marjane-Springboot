@@ -23,6 +23,7 @@ public class CategoryModel {
     @Column(name = "name")
     String name;
 
-    @OneToOne(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_admin_id")
     RayonAdminModel rayonAdmin;
 }

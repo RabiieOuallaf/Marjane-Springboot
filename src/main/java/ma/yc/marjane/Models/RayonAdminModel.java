@@ -30,7 +30,6 @@ public class RayonAdminModel {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "rayonAdmin",cascade = CascadeType.ALL)
     private CategoryModel category;
 }
