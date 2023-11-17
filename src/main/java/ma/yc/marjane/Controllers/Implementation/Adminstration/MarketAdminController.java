@@ -43,6 +43,13 @@ public class MarketAdminController {
         }
     }
 
+    /* ****
+     * PUT /api/v1/market-admin/update
+     * Request body : MarketAdminModel
+     * Description : update an existing admin market
+     *
+     * ****/
+
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody MarketAdminModel marketAdmin){
         Optional<MarketAdminModel> updatedMarketAdminModel = marketAdminService.update(marketAdmin);
@@ -54,22 +61,41 @@ public class MarketAdminController {
         }
     }
 
+    /* ****
+     * POST /api/v1/market-admin/readAll
+     * Request body :
+     * Description : returns a list of market admins
+     *
+     * ****/
+
     @GetMapping("/readAll")
     public ResponseEntity<List<MarketAdminModel>> readAll() {
-        System.out.println("I reached here!");
         List<MarketAdminModel> marketAdmins = (List<MarketAdminModel>) marketAdminService.readAll();
         System.out.println("List of market admins" + marketAdmins);
 
         return ResponseEntity.ok().body(marketAdmins);
     }
 
+    /* ****
+     * GET /api/v1/market-admin/read/{param}
+     * @param : String email
+     * Description : fetchs a market admin
+     *
+     * ****/
+
     @GetMapping("/read/{email}")
     public ResponseEntity<Optional<MarketAdminModel>> read(@PathVariable String email) {
-        System.out.println("email: " + email);
         ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
             return ResponseEntity.ok().body(marketAdminModel.getBody());
 
     }
+
+    /* ****
+     * DELETE /api/v1/market-admin/delete/{email}
+     * @param : String email
+     * Description : Delete an admin market
+     *
+     * ****/
 
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<Void> delete(@PathVariable String email){
