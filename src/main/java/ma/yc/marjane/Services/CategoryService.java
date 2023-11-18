@@ -86,7 +86,7 @@ public class CategoryService {
 
         if(categoryModel.isPresent()) {
             CategoryModel category = categoryModel.get();
-            CategoryDTO categoryDTO = CategoryMapper.categoryMapper.convertToCategoryDTO(category);
+            CategoryDTO categoryDTO = CategoryMapper.categoryMapper.toDTO(category);
 
             return categoryDTO;
         }else {
@@ -108,7 +108,7 @@ public class CategoryService {
         if(!categories.isEmpty()) {
             List<CategoryDTO> categoryDTOS = new ArrayList<>();
             categories.forEach(category -> {
-                categoryDTOS.add(CategoryMapper.categoryMapper.convertToCategoryDTO(category));
+                categoryDTOS.add(CategoryMapper.categoryMapper.toDTO(category));
             });
             return categoryDTOS;
         }

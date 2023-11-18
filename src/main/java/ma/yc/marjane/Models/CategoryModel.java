@@ -1,6 +1,5 @@
 package ma.yc.marjane.Models;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
