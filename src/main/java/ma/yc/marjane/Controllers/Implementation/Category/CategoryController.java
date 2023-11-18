@@ -1,6 +1,8 @@
 package ma.yc.marjane.Controllers.Implementation.Category;
 
 import lombok.extern.slf4j.Slf4j;
+import ma.yc.marjane.DTO.CategoryDTO;
+import ma.yc.marjane.Mappers.CategoryMapper;
 import ma.yc.marjane.Models.CategoryModel;
 import ma.yc.marjane.Services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +18,17 @@ import java.util.Optional;
 @Slf4j
 public class CategoryController {
     private final CategoryService categoryService;
+//    @Autowired
+//    private CategoryMapper categoryMapper;
     @Autowired
-
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService   ) {
         this.categoryService = categoryService;
     }
 
     /* ****
     *
     * POST /api/v1/category/create
-    * Definition : thie method creates a new category
+    * Definition : this method creates a new category
     * @Param : CategoryModel
     *
       **** */
@@ -63,10 +66,12 @@ public class CategoryController {
      *
      * ****/
     @GetMapping("/readAll")
-    public ResponseEntity<List<CategoryModel>> readAll() {
+    public ResponseEntity<List<CategoryDTO>> readAll() {
         try {
-            List<CategoryModel> categories = categoryService.readAll();
+            List<CategoryDTO> categories = categoryService.readAll();
+
             return ResponseEntity.ok().body(categories);
+
         } catch (Exception e) {
             // Log the exception for troubleshooting
             e.printStackTrace();
@@ -81,18 +86,21 @@ public class CategoryController {
      * ****/
     @GetMapping("/read/{id}")
     public ResponseEntity<String> read(@PathVariable Integer id) {
-        ResponseEntity<Optional<CategoryModel>> categoryModel = categoryService.read(id);
-        if(categoryModel.getBody().isPresent()) {
-            return ResponseEntity.ok().body("Category : " +categoryModel.getBody());
+        CategoryDTO categoryDTO = categoryService.read(id);
+
+        if(categoryDTO != null){
+            return ResponseEntity.ok().body("Category : " + categoryDTO);
         }else {
             return ResponseEntity.badRequest().body("Category not found");
         }
 
     }
+
+
     /* ****
      * DELETE /api/v1/category/delete/{param}
      * @param : Integer id
-     * Description : fetchs a category
+     * Description : fitches a category
      *
      * ****/
     @DeleteMapping("/delete/{id}")

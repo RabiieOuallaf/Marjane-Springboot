@@ -3,6 +3,8 @@ package ma.yc.marjane.Services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.yc.marjane.DTO.CategoryDTO;
+import ma.yc.marjane.Mappers.CategoryMapper;
 import ma.yc.marjane.Models.CategoryModel;
 import ma.yc.marjane.Repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,12 +81,16 @@ public class CategoryService {
      *
      **** */
 
-    public ResponseEntity<Optional<CategoryModel>> read(Integer id) {
+    public CategoryDTO read(Integer id) {
         Optional<CategoryModel> categoryModel = findCategory(id);
+
         if(categoryModel.isPresent()) {
-            return ResponseEntity.ok().body(categoryModel);
+            CategoryModel category = categoryModel.get();
+            CategoryDTO categoryDTO = CategoryMapper.categoryMapper.convertToCategoryDTO(category);
+
+            return categoryDTO;
         }else {
-            return ResponseEntity.notFound().build();
+            return null;
         }
 
     }
@@ -95,9 +102,17 @@ public class CategoryService {
     *
       **** */
 
-    public List<CategoryModel> readAll() {
+    public List<CategoryDTO> readAll() {
+
         List<CategoryModel> categories = categoryRepository.findAll();
-        return categories;
+        if(!categories.isEmpty()) {
+            List<CategoryDTO> categoryDTOS = new ArrayList<>();
+            categories.forEach(category -> {
+                categoryDTOS.add(CategoryMapper.categoryMapper.convertToCategoryDTO(category));
+            });
+            return categoryDTOS;
+        }
+        return null;
     }
 
     /* ****

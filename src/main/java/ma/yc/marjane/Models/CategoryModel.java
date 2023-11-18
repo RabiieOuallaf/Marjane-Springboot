@@ -2,10 +2,7 @@ package ma.yc.marjane.Models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "CategoryModel")
 @Table(name = "category")
@@ -13,6 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class CategoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +26,8 @@ public class CategoryModel {
     @JoinColumn(name = "category_admin_id" , referencedColumnName = "id", foreignKey = @ForeignKey(name = "rayon_admin_fkey"))
     RayonAdminModel rayonAdmin;
 
-    public String toString() {
-        return "Category model : " +
-                " id: " + id + " name: " + name;
-    }
+//    public String toString() {
+//        return "Category model : " +
+//                " id: " + id + " name: " + name;
+//    }
 }
