@@ -24,6 +24,11 @@ public class CategoryModel {
     String name;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_admin_id")
+    @JoinColumn(name = "category_admin_id" , referencedColumnName = "id", foreignKey = @ForeignKey(name = "rayon_admin_fkey"))
     RayonAdminModel rayonAdmin;
+
+    public String toString() {
+        return "Category model : " +
+                " id: " + id + " name: " + name;
+    }
 }

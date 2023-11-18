@@ -63,7 +63,7 @@ public class MarketAdminController {
 
     /* ****
      * POST /api/v1/market-admin/readAll
-     * Request body :
+     * Request body : none
      * Description : returns a list of market admins
      *
      * ****/
@@ -71,7 +71,6 @@ public class MarketAdminController {
     @GetMapping("/readAll")
     public ResponseEntity<List<MarketAdminModel>> readAll() {
         List<MarketAdminModel> marketAdmins = (List<MarketAdminModel>) marketAdminService.readAll();
-        System.out.println("List of market admins" + marketAdmins);
 
         return ResponseEntity.ok().body(marketAdmins);
     }
@@ -87,7 +86,6 @@ public class MarketAdminController {
     public ResponseEntity<Optional<MarketAdminModel>> read(@PathVariable String email) {
         ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
             return ResponseEntity.ok().body(marketAdminModel.getBody());
-
     }
 
     /* ****

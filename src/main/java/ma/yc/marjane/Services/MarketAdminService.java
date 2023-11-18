@@ -18,16 +18,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MarketAdminService {
 
-    /* ****
-    *
-    * Description : create a new MarketAdmin (Register it)
-    * Helpers : findMarketAdmin method check if market admin with given email already exists
-    * @param : MarketAdminEntity(Model) as a parameter
-    *
-     **** */
+
 
     @Autowired
     private final MarketAdminRepository marketAdminRepository;
+
+    /* ****
+     *
+     * Description : create a new MarketAdmin (Register it)
+     * Helpers : findMarketAdmin method check if market admin with given email already exists
+     * @param : MarketAdminEntity(Model) as a parameter
+     *
+     **** */
 
     @Transactional
     public Optional<MarketAdminModel> create(MarketAdminModel marketAdmin){
@@ -54,7 +56,6 @@ public class MarketAdminService {
      *
      **** */
 
-
     @Transactional
     public Optional<MarketAdminModel> update(MarketAdminModel marketAdmin){
         var marketAdminExists = findMarketAdmin(marketAdmin.getEmail());
@@ -73,14 +74,13 @@ public class MarketAdminService {
 
     /* ****
      *
-     * Description : update a new MarketAdmin (Register it)
+     * Description : delete category
      * @param : Email
      *
      **** */
 
     @Transactional
     public ResponseEntity<Void> delete(String email ){
-        System.out.println("Service email" + email);
 
         var marketAdminExists = findMarketAdmin(email);
 
@@ -101,7 +101,6 @@ public class MarketAdminService {
 
     public ResponseEntity<Optional<MarketAdminModel>> read(String email) {
         Optional<MarketAdminModel> marketAdminModel = marketAdminRepository.findByEmail(email);
-        System.out.println(marketAdminModel + "<== Heere");
         if (marketAdminModel.isPresent()) {
             return ResponseEntity.ok().body(marketAdminModel);
         } else {
@@ -116,9 +115,7 @@ public class MarketAdminService {
      *
      **** */
     public ResponseEntity<List<MarketAdminModel>> readAll() {
-        System.out.println("I reached here as well , In the service");
         List<MarketAdminModel> marketAdmins = marketAdminRepository.findAll();
-        System.out.println("I don't think i'll reach here too "+ " " + marketAdmins);
         return ResponseEntity.ok().body(marketAdmins);
     }
 
