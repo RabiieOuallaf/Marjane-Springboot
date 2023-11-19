@@ -43,6 +43,7 @@ public class CategoryController {
     }
 
     /* ****
+    *
      * PUT /api/v1/category/update
      * Request body : CategoryModel
      * Description : update an existing categoy
@@ -50,15 +51,16 @@ public class CategoryController {
      * ****/
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody CategoryModel category){
-        Optional<CategoryModel> updatedCategoryModel = categoryService.update(category);
+        Optional<CategoryDTO> updatedCategory = categoryService.update(category);
 
-        if(updatedCategoryModel.isPresent()) {
+        if(updatedCategory.isPresent()) {
             return ResponseEntity.ok("Category with name " + category.getName() +" And id " + category.getId() + "Updated successfully");
         }else {
             return ResponseEntity.badRequest().body("Category updating failed, check logs for more details");
         }
     }
     /* ****
+    *
      * POST /api/v1/category/readAll
      * Request body : none
      * Description : returns a list of categories
@@ -99,7 +101,7 @@ public class CategoryController {
     /* ****
      * DELETE /api/v1/category/delete/{param}
      * @param : Integer id
-     * Description : fitches a category
+     * Description : delete a category
      *
      * ****/
     @DeleteMapping("/delete/{id}")

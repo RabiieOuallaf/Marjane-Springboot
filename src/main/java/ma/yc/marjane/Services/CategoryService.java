@@ -60,7 +60,8 @@ public class CategoryService {
      * @param : CategoryEntity(Model) as a parameter
      *
      **** */
-    public  Optional<CategoryModel> update(CategoryModel category) {
+    @Transactional
+    public  Optional<CategoryDTO> update(CategoryModel category) {
         var existedCategory = findCategory(category.getId());
 
         if(existedCategory.isEmpty()) {
@@ -69,10 +70,12 @@ public class CategoryService {
         }
 
         if(category.getId() == 0){
-            log.error("Cannot delete Market admin without a valid id");
+            log.error("Cannot update category without a valid id");
         }
         CategoryModel categoryModel = categoryRepository.save(category);
-        return Optional.of(categoryModel);
+        CategoryDTO categoryDTO = CategoryMapper.categoryMapper.toDTO(categoryModel);
+
+        return Optional.of(categoryDTO);
     }
 
     /* ****
@@ -105,7 +108,6 @@ public class CategoryService {
       **** */
 
     public List<CategoryDTO> readAll() {
-        System.out.println("I'm here");
         List<CategoryModel> categories = categoryRepository.findAll();
         if(!categories.isEmpty()) {
             List<CategoryDTO> categoryDTOS = new ArrayList<>();

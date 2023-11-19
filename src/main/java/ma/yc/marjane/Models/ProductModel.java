@@ -28,7 +28,7 @@ public class ProductModel {
 
     private double price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
