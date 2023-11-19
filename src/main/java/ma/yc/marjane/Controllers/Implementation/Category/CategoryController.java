@@ -2,7 +2,6 @@ package ma.yc.marjane.Controllers.Implementation.Category;
 
 import lombok.extern.slf4j.Slf4j;
 import ma.yc.marjane.DTO.CategoryDTO;
-import ma.yc.marjane.Mappers.CategoryMapper;
 import ma.yc.marjane.Models.CategoryModel;
 import ma.yc.marjane.Services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

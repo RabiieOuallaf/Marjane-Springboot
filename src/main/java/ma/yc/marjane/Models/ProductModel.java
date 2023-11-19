@@ -28,10 +28,26 @@ public class ProductModel {
 
     private double price;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Basic
+    @Column(name = "quantity")
+    private int quantity;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
-    @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL)
     private PromotionModel promotion;
+
+    @Override
+    public String toString() {
+        return "ProductModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", category=" + (category != null ? category.getId() : "null") +
+                '}';
+    }
+
 }

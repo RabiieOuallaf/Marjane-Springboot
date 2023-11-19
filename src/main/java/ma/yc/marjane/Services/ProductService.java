@@ -78,9 +78,9 @@ public class ProductService {
      **** */
     public ProductDTO read(Integer id) {
         Optional<ProductModel> productModel = findProduct(id);
-
         if(productModel.isPresent()) {
             ProductModel product = productModel.get();
+
             ProductDTO productDTO = ProductMapper.productMapper.toDTO(product);
 
             return productDTO;
