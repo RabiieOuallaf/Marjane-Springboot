@@ -31,7 +31,7 @@ public class CategoryService {
      *
      **** */
     @Transactional
-    public Optional<CategoryModel> create(CategoryModel categoryModel) {
+    public CategoryDTO create(CategoryModel categoryModel) {
         var existingCategory = findCategory(categoryModel.getName());
 
         if(existingCategory.isPresent()){
@@ -39,7 +39,9 @@ public class CategoryService {
         }
 
         CategoryModel createdCategoryModel = categoryRepository.save(categoryModel);
-        return Optional.of(createdCategoryModel);
+        CategoryDTO categoryDTO = CategoryMapper.categoryMapper.toDTO(createdCategoryModel);
+
+        return categoryDTO;
     }
 
     private Optional<CategoryModel> findCategory(String name) {
@@ -75,7 +77,7 @@ public class CategoryService {
 
     /* ****
      *
-     * Description : get a user by id
+     * Description : get a category by id
      * Helpers : findCategory(Integer id) method check if market category with given email already exists
      * @param : category id
      *
@@ -103,7 +105,7 @@ public class CategoryService {
       **** */
 
     public List<CategoryDTO> readAll() {
-
+        System.out.println("I'm here");
         List<CategoryModel> categories = categoryRepository.findAll();
         if(!categories.isEmpty()) {
             List<CategoryDTO> categoryDTOS = new ArrayList<>();
@@ -117,8 +119,8 @@ public class CategoryService {
 
     /* ****
      *
-     * Description : delete category (Register it)
-     * Helpers : findCategory(Integer id) method check if market category with given email already exists
+     * Description : delete category
+     * Helpers : findCategory(Integer id) method check if market category already exists
      * @param : id
      *
      **** */

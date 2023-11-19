@@ -11,5 +11,5 @@ public interface RayonAdminMapper {
 
     RayonAdminDTO toDTO(RayonAdminModel rayonModel);
 
-    RayonAdminModel toModel(RayonAdminDTO rayonDTO);
+    RayonAdminModel toEntity(RayonAdminDTO rayonDTO);
 }

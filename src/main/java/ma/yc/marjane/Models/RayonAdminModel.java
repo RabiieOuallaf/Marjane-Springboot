@@ -1,10 +1,7 @@
 package ma.yc.marjane.Models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "RayonAdminModel")
 @Table(name = "rayon_adminstrator")
@@ -12,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class RayonAdminModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

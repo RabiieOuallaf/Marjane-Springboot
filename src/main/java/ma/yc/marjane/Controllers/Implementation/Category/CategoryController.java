@@ -18,8 +18,7 @@ import java.util.Optional;
 @Slf4j
 public class CategoryController {
     private final CategoryService categoryService;
-//    @Autowired
-//    private CategoryMapper categoryMapper;
+
     @Autowired
     public CategoryController(CategoryService categoryService   ) {
         this.categoryService = categoryService;
@@ -35,8 +34,8 @@ public class CategoryController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody CategoryModel category){
-        Optional<CategoryModel> categoryModel = categoryService.create(category);
-        if(categoryModel.isPresent()){
+        CategoryDTO categoryDTO = categoryService.create(category);
+        if(categoryDTO != null){
             return ResponseEntity.ok("Category with name " + category.getName() +" And id " + category.getId() + "Created successfully");
         }else {
             return ResponseEntity.badRequest().body("Category creation failed, check logs for more details");
@@ -46,7 +45,7 @@ public class CategoryController {
     /* ****
      * PUT /api/v1/category/update
      * Request body : CategoryModel
-     * Description : update an existing admin market
+     * Description : update an existing categoy
      *
      * ****/
     @PutMapping("/update")

@@ -1,6 +1,11 @@
 package ma.yc.marjane.Controllers.Implementation.Adminstration;
 
+import ma.yc.marjane.DTO.RayonAdminDTO;
 import ma.yc.marjane.Models.RayonAdminModel;
+import ma.yc.marjane.Services.RayonAdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,25 +13,86 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/rayon-admin")
 public class RayonAdminController {
-    @PostMapping("/create")
-    public RayonAdminModel create(@RequestBody RayonAdminModel rayonAdmin){
-        return null;
+
+    @Autowired
+    private final RayonAdminService rayonAdminService;
+
+    public RayonAdminController(RayonAdminService rayonAdminService) {
+        this.rayonAdminService = rayonAdminService;
     }
 
-    @PutMapping("/put")
-    public RayonAdminModel update(@RequestBody RayonAdminModel rayonAdmin){
-        return null;
+    /* ****
+     *
+     * POST /api/v1/rayon-admin/create
+     * Definition : this method creates a new rayon admin
+     * @Param : RayonAdminModel
+     *
+     **** */
+    @PostMapping("/create")
+    public ResponseEntity<String> create(@RequestBody RayonAdminModel rayonAdmin){
+        RayonAdminDTO createdRayonAdmin = rayonAdminService.create(rayonAdmin);
+        System.out.println(rayonAdmin.getFullname());
+        System.out.println(createdRayonAdmin.getFullname() + "<== created");
+        if(createdRayonAdmin != null){
+            return ResponseEntity.ok("Created successfully : "+ createdRayonAdmin);
+        }else {
+            return ResponseEntity.badRequest().body("Admin creation failed, check logs for more details");
+        }
     }
+    /* ****
+     * PUT /api/v1/category/update
+     * Request body : CategoryModel
+     * Description : update an existing admin
+     *
+     * ****/
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestBody RayonAdminModel rayonAdmin){
+        RayonAdminDTO createdRayonAdmin = rayonAdminService.update(rayonAdmin);
+
+        if(createdRayonAdmin != null){
+            return ResponseEntity.ok("Updated successfully : "+ createdRayonAdmin);
+        }else {
+            return ResponseEntity.badRequest().body("Admin creation failed, check logs for more details");
+        }
+    }
+    /* ****
+     * POST /api/v1/category/readAll
+     * Request body : none
+     * Description : returns a list of admin
+     *
+     * ****/
     @GetMapping("/readAll")
-    public List<RayonAdminModel> readAll(){
-        return null;
+    public ResponseEntity<List<RayonAdminDTO>> readAll(){
+        List<RayonAdminDTO> rayonAdmins = rayonAdminService.readAll();
+
+        return ResponseEntity.ok().body(rayonAdmins);
     }
-    @GetMapping("/read")
-    public RayonAdminModel read(@RequestBody String email){
-        return null;
+    /* ****
+     * POST /api/v1/category/read
+     * Request body : email
+     * Description : returns an admin
+     *
+     * ****/
+    @GetMapping("/read/{email}")
+    public ResponseEntity<String> read(@PathVariable String email){
+        RayonAdminDTO rayonAdminDTO = rayonAdminService.read(email);
+
+        if(rayonAdminDTO != null){
+            return ResponseEntity.ok().body("Rayon admin : "+rayonAdminDTO);
+        }else {
+            return ResponseEntity.badRequest().body("Admin not found");
+        }
     }
-    @DeleteMapping("/delete")
-    public RayonAdminModel delete(@RequestBody String email){
-        return null;
+    /* ****
+     * DELETE /api/v1/category/read
+     * Request body : email
+     * Description : deletes an admin
+     *
+     * ****/
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<Void> delete(@PathVariable String email){
+        rayonAdminService.delete(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 }
