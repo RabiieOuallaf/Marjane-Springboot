@@ -3,6 +3,8 @@ package ma.yc.marjane.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity(name = "CategoryModel")
 @Table(name = "category")
 @Data
@@ -25,8 +27,6 @@ public class CategoryModel {
     @JoinColumn(name = "category_admin_id" , referencedColumnName = "id", foreignKey = @ForeignKey(name = "rayon_admin_fkey"))
     RayonAdminModel rayonAdmin;
 
-//    public String toString() {
-//        return "Category model : " +
-//                " id: " + id + " name: " + name;
-//    }
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<ProductModel> products;
 }
