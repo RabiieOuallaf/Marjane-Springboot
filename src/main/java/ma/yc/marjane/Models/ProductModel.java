@@ -32,4 +32,6 @@ public class ProductModel {
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
+    @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PromotionModel promotion;
 }
