@@ -23,6 +23,16 @@ public class RayonAdminController {
 
     /* ****
      *
+     * POST /api/v1/rayon-admin/authenticate
+     * Definition : login rayon admin
+     * @Param : RayonAdminModel
+     *
+     **** */
+
+
+
+    /* ****
+     *
      * POST /api/v1/rayon-admin/create
      * Definition : this method creates a new rayon admin
      * @Param : RayonAdminModel

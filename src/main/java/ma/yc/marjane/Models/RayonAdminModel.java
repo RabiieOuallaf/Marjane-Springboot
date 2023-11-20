@@ -32,5 +32,13 @@ public class RayonAdminModel {
     @OneToOne(mappedBy = "rayonAdmin",cascade = CascadeType.ALL)
     private CategoryModel category;
 
-
+    public String toString() {
+        return "RayonAdministratorModel{" +
+                "id=" + id +
+                ", fullname='" + fullname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", category=" + category +
+                '}';
+    }
 }

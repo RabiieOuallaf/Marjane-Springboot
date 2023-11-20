@@ -1,14 +1,16 @@
 package ma.yc.marjane.Controllers.Implementation.Promotion;
 
+import ma.yc.marjane.DTO.ProductDTO;
 import ma.yc.marjane.DTO.PromotionDTO;
 import ma.yc.marjane.Models.PromotionModel;
 import ma.yc.marjane.Services.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/promotion")
@@ -38,4 +40,26 @@ public class PromotionController {
             return ResponseEntity.badRequest().body("Category creation failed, check logs for more details");
         }
     }
+
+//    @GetMapping("/readAll/{rayonAdminId}")
+//    public ResponseEntity<String> readAll(@PathVariable int rayonAdminId) {
+//        PromotionDTO promotionDTO = promotionService.readAll(rayonAdminId);
+//    }
+    @PostMapping("/accept")
+    public ResponseEntity<String> acceptPromotion(@RequestBody PromotionDTO promotionDTO) {
+        try {
+
+            Optional<Optional<ProductDTO>> acceptedPromotion = promotionService.acceptPromotion(promotionDTO);
+
+            if (acceptedPromotion != null) {
+                return ResponseEntity.ok("Promotion accepted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Promotion not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+        }
+    }
+
+
 }
