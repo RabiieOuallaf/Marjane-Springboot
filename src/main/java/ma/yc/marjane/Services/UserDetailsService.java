@@ -2,10 +2,14 @@ package ma.yc.marjane.Services;
 
 import ma.yc.marjane.DTO.GeneralAdminDTO;
 import ma.yc.marjane.DTO.RayonAdminDTO;
+import ma.yc.marjane.Models.MarketAdminModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
@@ -24,7 +28,36 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         GeneralAdminDTO generalAdminDTO = generalAdminService.read(email);
         RayonAdminDTO rayonAdminDTO = rayonAdminService.read(email);
-        MarketAdminDTO marketAdminDTO = marketAdminService.read(email);
+        ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
+
+        if(generalAdminDTO != null) {
+            UserDetails userDetails =
+                org.springframework.security.core.userdetails.User.builder()
+                        .username(generalAdminDTO.getEmail())
+                        .password(generalAdminDTO.getPassword())
+                        .roles("generalAdmin")
+                        .build();
+            return userDetails;
+        }else if(rayonAdminDTO != null) {
+            UserDetails userDetails =
+                    org.springframework.security.core.userdetails.User.builder()
+                            .username(rayonAdminDTO.getEmail())
+                            .password(rayonAdminDTO.getPassword())
+                            .roles("rayonAdmin")
+                            .build();
+            return userDetails;
+
+        }else if(marketAdminModel != null) {
+            UserDetails userDetails =
+                    org.springframework.security.core.userdetails.User.builder()
+                            .username(rayonAdminDTO.getEmail())
+                            .password(rayonAdminDTO.getPassword())
+                            .roles("marketAdmin")
+                            .build();
+            return userDetails;
+        }else {
+            throw new UsernameNotFoundException("User not found with email" + email);
+        }
     }
 
 }
