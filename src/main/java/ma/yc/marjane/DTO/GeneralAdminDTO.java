@@ -5,9 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-public class CategoryDTO {
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class GeneralAdminDTO {
     int id;
-    String name;
-    int category_admin_id;
+    String email;
+    String fullname;
+    String password;
 }
