@@ -26,35 +26,41 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         GeneralAdminDTO generalAdminDTO = generalAdminService.read(email);
         RayonAdminDTO rayonAdminDTO = rayonAdminService.read(email);
         ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
 
         if(generalAdminDTO != null) {
+
             UserDetails userDetails =
                 org.springframework.security.core.userdetails.User.builder()
                         .username(generalAdminDTO.getEmail())
                         .password(generalAdminDTO.getPassword())
-                        .roles("generalAdmin")
+                        .roles("GENERAL_ADMIN")
                         .build();
+            System.out.println(userDetails + "<== General admin");
             return userDetails;
         }else if(rayonAdminDTO != null) {
             UserDetails userDetails =
                     org.springframework.security.core.userdetails.User.builder()
                             .username(rayonAdminDTO.getEmail())
                             .password(rayonAdminDTO.getPassword())
-                            .roles("rayonAdmin")
+                            .roles("RAYON_ADMIN")
                             .build();
+            System.out.println(rayonAdminDTO + "<== Rayon admin");
+
             return userDetails;
 
-        }else if(marketAdminModel != null) {
-            UserDetails userDetails =
-                    org.springframework.security.core.userdetails.User.builder()
-                            .username(rayonAdminDTO.getEmail())
-                            .password(rayonAdminDTO.getPassword())
-                            .roles("marketAdmin")
-                            .build();
-            return userDetails;
+
+//        }else if(marketAdminModel != null) {
+//            UserDetails userDetails =
+//                    org.springframework.security.core.userdetails.User.builder()
+//                            .username(marketAdminModel.getEmail())
+//                            .password(marketAdminModel.getPassword())
+//                            .roles("MARKET_ADMIN")
+//                            .build();
+//            return userDetails;
         }else {
             throw new UsernameNotFoundException("User not found with email" + email);
         }

@@ -31,37 +31,41 @@ public class JwtUtil {
             GeneralAdminModel generalAdmin = (GeneralAdminModel)admin;
             Claims claims = Jwts.claims().setSubject(generalAdmin.getEmail());
             claims.put("fullName", generalAdmin.getFullname());
+            claims.put("role", "GENERAL_ADMIN");
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
-
             return Jwts.builder()
                     .setClaims(claims)
                     .setExpiration(tokenValidity)
-                    .signWith(SignatureAlgorithm.ES256, secret_key)
+                    .signWith(SignatureAlgorithm.HS256, secret_key)
                     .compact();
         }else if(admin instanceof RayonAdminModel) {
             RayonAdminModel rayonAdminModel = (RayonAdminModel)admin;
             Claims claims = Jwts.claims().setSubject(rayonAdminModel.getEmail());
             claims.put("fullaname", rayonAdminModel.getFullname());
+            claims.put("role", "RAYON_ADMIN");
+
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
 
             return Jwts.builder()
                     .setClaims(claims)
                     .setExpiration(tokenValidity)
-                    .signWith(SignatureAlgorithm.ES256, secret_key)
+                    .signWith(SignatureAlgorithm.HS256, secret_key)
                     .compact();
         }else if(admin instanceof MarketAdminModel) {
             MarketAdminModel marketAdmin = (MarketAdminModel) admin;
             Claims claims = Jwts.claims().setSubject(marketAdmin.getEmail());
             claims.put("fullname", marketAdmin.getFullname());
+            claims.put("role", "MARKET_ADMIN");
+
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
 
             return Jwts.builder()
                     .setClaims(claims)
                     .setExpiration(tokenValidity)
-                    .signWith(SignatureAlgorithm.ES256, secret_key)
+                    .signWith(SignatureAlgorithm.HS256, secret_key)
                     .compact();
         }else {
             throw new IllegalArgumentException("Unsupported admin type");
@@ -75,7 +79,7 @@ public class JwtUtil {
         try {
             String token = resolveToken(req);
             if(token != null) {
-                return parseJwtClaims(token)
+                return parseJwtClaims(token);
             }
             return null;
         } catch (ExpiredJwtException e) {
