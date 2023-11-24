@@ -21,6 +21,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     private final String MARKET_ADMIN_PREFIX = "MARKET_ADMIN";
     private final String RAYON_ADMIN_PREFIX = "RAYON_ADMIN";
+    private final String PROMOTION_PREFIX = "PROMOTION";
 
 
     @Autowired
@@ -74,6 +75,10 @@ public class UserDetailsService implements org.springframework.security.core.use
                             .username(rayonAdminDTO.getEmail())
                             .password(rayonAdminDTO.getPassword())
                             .roles("RAYON_ADMIN")
+                            .authorities(
+                                    createAuthority("ACCEPT", PROMOTION_PREFIX),
+                                    createAuthority("REJECT", PROMOTION_PREFIX)
+                            )
                             .build();
 
             return userDetails;
