@@ -7,6 +7,7 @@ import ma.yc.marjane.Services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +32,9 @@ public class CategoryController {
     *
       **** */
 
+    @PreAuthorize("hasAuthority('CREATE_CATEGORY')")
     @PostMapping("/create")
+
     public ResponseEntity<String> create(@RequestBody CategoryModel category){
         CategoryDTO categoryDTO = categoryService.create(category);
         if(categoryDTO != null){
@@ -48,7 +51,9 @@ public class CategoryController {
      * Description : update an existing categoy
      *
      * ****/
+    @PreAuthorize("hasAuthority('UPDATE_CATEGORY')")
     @PutMapping("/update")
+
     public ResponseEntity<String> update(@RequestBody CategoryModel category){
         Optional<CategoryDTO> updatedCategory = categoryService.update(category);
 
@@ -65,7 +70,9 @@ public class CategoryController {
      * Description : returns a list of categories
      *
      * ****/
+    @PreAuthorize("hasAuthority('READ_CATEGORY')")
     @GetMapping("/readAll")
+
     public ResponseEntity<List<CategoryDTO>> readAll() {
         try {
             List<CategoryDTO> categories = categoryService.readAll();
@@ -84,7 +91,9 @@ public class CategoryController {
      * Description : fetchs a category
      *
      * ****/
+    @PreAuthorize("hasAuthority('READ_CATEGORY')")
     @GetMapping("/read/{id}")
+
     public ResponseEntity<String> read(@PathVariable Integer id) {
         CategoryDTO categoryDTO = categoryService.read(id);
 
@@ -103,7 +112,9 @@ public class CategoryController {
      * Description : delete a category
      *
      * ****/
+    @PreAuthorize("hasAuthority('DELETE_CATEGORY')")
     @DeleteMapping("/delete/{id}")
+
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoryService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);

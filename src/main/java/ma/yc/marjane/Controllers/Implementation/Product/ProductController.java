@@ -7,6 +7,7 @@ import ma.yc.marjane.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public class ProductController {
      * @Param : ProductModel
      *
      **** */
+
+    @PreAuthorize("hasAuthority('CREATE_PRODUCT')")
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody ProductModel productModel) {
         ProductDTO productDTO = productService.create(productModel);
@@ -49,6 +52,7 @@ public class ProductController {
      *
      * ****/
 
+    @PreAuthorize("hasAuthority('UPDATE_PRODUCT')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody ProductModel productModel){
         Optional<ProductDTO> updatedProduct = productService.update(productModel);
@@ -67,6 +71,7 @@ public class ProductController {
      * Description : returns an existing product
      *
      * ****/
+    @PreAuthorize("hasAuthority('READ_PRODUCT')")
     @GetMapping("/read/{id}")
     public ResponseEntity<String> read(@PathVariable int id) {
         ProductDTO productDTO = productService.read(id);
@@ -84,6 +89,7 @@ public class ProductController {
      * Description : returns a list of categories
      *
      * ****/
+    @PreAuthorize("hasAuthority('READ_PRODUCT')")
     @GetMapping("/readAll")
     public ResponseEntity<List<ProductDTO>> readAll() {
         try {
@@ -104,6 +110,7 @@ public class ProductController {
      * Description : delete a product
      *
      * ****/
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         productService.delete(id);

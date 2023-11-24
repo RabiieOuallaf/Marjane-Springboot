@@ -7,6 +7,7 @@ import ma.yc.marjane.Services.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -30,6 +31,8 @@ public class PromotionController {
      * @Param : PromotionModel
      *
      **** */
+    @PreAuthorize("hasAuthority('CREATE_PROMOTION')")
+
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody PromotionModel promotion) {
         PromotionDTO promotionDTO = promotionService.create(promotion);
@@ -45,6 +48,7 @@ public class PromotionController {
 //    public ResponseEntity<String> readAll(@PathVariable int rayonAdminId) {
 //        PromotionDTO promotionDTO = promotionService.readAll(rayonAdminId);
 //    }
+    @PreAuthorize("hasAuthority('ACCEPT_PROMOTION')")
     @PostMapping("/accept")
     public ResponseEntity<String> acceptPromotion(@RequestBody PromotionDTO promotionDTO) {
         try {

@@ -1,6 +1,8 @@
 package ma.yc.marjane.Controllers.Implementation.Adminstration;
 
 import jakarta.annotation.security.RolesAllowed;
+import ma.yc.marjane.DTO.MarketAdminDTO;
+import ma.yc.marjane.Mappers.MarketAdminMapper;
 import ma.yc.marjane.Models.MarketAdminModel;
 import ma.yc.marjane.Services.MarketAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +38,9 @@ public class MarketAdminController {
     @PreAuthorize("hasAuthority('CREATE_MARKET_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody MarketAdminModel marketAdmin){
-        Optional<MarketAdminModel> createdMarketAdmin= marketAdminService.create(marketAdmin);
-        if(createdMarketAdmin.isPresent()){
+        MarketAdminModel createdMarketAdmin= marketAdminService.create(marketAdmin);
+        MarketAdminDTO marketAdminDTO = MarketAdminMapper.marketAdminMapper.toDTO(createdMarketAdmin);
+        if(marketAdminDTO != null){
             return ResponseEntity.ok("Market Admin with email : " + marketAdmin.getEmail() + " created successfully");
         }else {
             return ResponseEntity.badRequest().body("Market admin creation failed , check logs for more details");

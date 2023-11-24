@@ -32,7 +32,7 @@ public class MarketAdminService {
      **** */
 
     @Transactional
-    public Optional<MarketAdminModel> create(MarketAdminModel marketAdmin){
+    public MarketAdminModel create(MarketAdminModel marketAdmin){
         var marketAdminExists = findMarketAdmin(marketAdmin.getEmail());
 
         if(marketAdminExists.isPresent()) {
@@ -40,7 +40,7 @@ public class MarketAdminService {
         }
 
         MarketAdminModel createdMarketAdminModel = marketAdminRepository.save(marketAdmin);
-        return Optional.of(createdMarketAdminModel);
+        return createdMarketAdminModel;
     }
 
     private Optional<MarketAdminModel> findMarketAdmin(String email) {
