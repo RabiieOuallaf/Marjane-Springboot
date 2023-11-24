@@ -77,21 +77,26 @@ public class UserDetailsService implements org.springframework.security.core.use
                             .roles("RAYON_ADMIN")
                             .authorities(
                                     createAuthority("ACCEPT", PROMOTION_PREFIX),
-                                    createAuthority("REJECT", PROMOTION_PREFIX)
+                                    createAuthority("REJECT", PROMOTION_PREFIX),
+                                    createAuthority("READ", PROMOTION_PREFIX)
+
                             )
                             .build();
 
             return userDetails;
 
-
-//        }else if(marketAdminModel != null) {
-//            UserDetails userDetails =
-//                    org.springframework.security.core.userdetails.User.builder()
-//                            .username(marketAdminModel.getEmail())
-//                            .password(marketAdminModel.getPassword())
-//                            .roles("MARKET_ADMIN")
-//                            .build();
-//            return userDetails;
+        }else if(marketAdminModel != null) {
+            UserDetails userDetails =
+                    org.springframework.security.core.userdetails.User.builder()
+                            .username(marketAdminModel.getEmail())
+                            .password(marketAdminModel.getPassword())
+                            .roles("MARKET_ADMIN")
+                            .authorities(
+                                    createAuthority("CREATE", PROMOTION_PREFIX),
+                                    createAuthority("READ", PROMOTION_PREFIX)
+                            )
+                            .build();
+            return userDetails;
         }else {
             throw new UsernameNotFoundException("User not found with email" + email);
         }
