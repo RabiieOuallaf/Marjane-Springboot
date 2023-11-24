@@ -12,10 +12,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import ma.yc.marjane.Auth.JwtUtil;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -44,7 +42,7 @@ public class SecurityConfig {
         http.csrf( csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/login").permitAll()
-                        .requestMatchers("/api/v1/product/**").hasAuthority("GENERL_ADMIN")
+                        .requestMatchers("/api/v1/product/**").permitAll()
                         .requestMatchers("/api/v1/rayon-admin/**").permitAll()
                         .requestMatchers("/api/v1/market-admin/**").permitAll()
                         .requestMatchers("/api/v1/general-admin/**").permitAll()

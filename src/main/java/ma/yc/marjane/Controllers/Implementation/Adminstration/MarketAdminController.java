@@ -24,17 +24,16 @@ public class MarketAdminController {
     }
 
 
-    @PostMapping("/authenticate")
-    public MarketAdminModel authenticate(@RequestBody MarketAdminModel marketModel) {
-        return null;
-    }
+
 
     /* ****
     * POST /api/v1/market-admin/create
     * Request body : MarketAdminModel
     * Description : create a new admin market
+    * Security : could be accessed by users who the authority only
     *
      * ****/
+    @PreAuthorize("hasAuthority('CREATE_MARKET_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody MarketAdminModel marketAdmin){
         Optional<MarketAdminModel> createdMarketAdmin= marketAdminService.create(marketAdmin);
@@ -51,6 +50,7 @@ public class MarketAdminController {
      * Description : update an existing admin market
      *
      * ****/
+    @PreAuthorize("hasAuthority('UPDATE_MARKET_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody MarketAdminModel marketAdmin){
         Optional<MarketAdminModel> updatedMarketAdminModel = marketAdminService.update(marketAdmin);
@@ -69,6 +69,7 @@ public class MarketAdminController {
      *
      * ****/
 
+    @PreAuthorize("hasAuthority('READ_MARKET_ADMIN')")
     @GetMapping("/readAll")
     public ResponseEntity<List<MarketAdminModel>> readAll() {
         List<MarketAdminModel> marketAdmins = (List<MarketAdminModel>) marketAdminService.readAll();
@@ -82,7 +83,7 @@ public class MarketAdminController {
      * Description : fetchs a market admin
      *
      * ****/
-
+    @PreAuthorize("hasAuthority('READ_MARKET_ADMIN')")
     @GetMapping("/read/{email}")
     public ResponseEntity<Optional<MarketAdminModel>> read(@PathVariable String email) {
         ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
@@ -96,6 +97,7 @@ public class MarketAdminController {
      *
      * ****/
 
+    @PreAuthorize("hasAuthority('DELETE_MARKET_ADMIN')")
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<Void> delete(@PathVariable String email){
          marketAdminService.delete(email);

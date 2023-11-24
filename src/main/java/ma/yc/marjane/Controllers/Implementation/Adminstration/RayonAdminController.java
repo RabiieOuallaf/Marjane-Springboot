@@ -6,6 +6,7 @@ import ma.yc.marjane.Services.RayonAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +22,6 @@ public class RayonAdminController {
         this.rayonAdminService = rayonAdminService;
     }
 
-    /* ****
-     *
-     * POST /api/v1/rayon-admin/authenticate
-     * Definition : login rayon admin
-     * @Param : RayonAdminModel
-     *
-     **** */
 
 
 
@@ -38,6 +32,7 @@ public class RayonAdminController {
      * @Param : RayonAdminModel
      *
      **** */
+    @PreAuthorize("hasAuthority('CREATE_RAYON_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody RayonAdminModel rayonAdmin){
         RayonAdminDTO createdRayonAdmin = rayonAdminService.create(rayonAdmin);
@@ -55,6 +50,7 @@ public class RayonAdminController {
      * Description : update an existing admin
      *
      * ****/
+    @PreAuthorize("hasAuthority('UPDATE_RAYON_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody RayonAdminModel rayonAdmin){
         RayonAdminDTO createdRayonAdmin = rayonAdminService.update(rayonAdmin);
@@ -71,6 +67,7 @@ public class RayonAdminController {
      * Description : returns a list of admin
      *
      * ****/
+    @PreAuthorize("hasAuthority('READ_RAYON_ADMIN')")
     @GetMapping("/readAll")
     public ResponseEntity<List<RayonAdminDTO>> readAll(){
         List<RayonAdminDTO> rayonAdmins = rayonAdminService.readAll();
@@ -83,6 +80,8 @@ public class RayonAdminController {
      * Description : returns an admin
      *
      * ****/
+    @PreAuthorize("hasAuthority('READ_RAYON_ADMIN')")
+
     @GetMapping("/read/{email}")
     public ResponseEntity<String> read(@PathVariable String email){
         RayonAdminDTO rayonAdminDTO = rayonAdminService.read(email);
@@ -99,6 +98,7 @@ public class RayonAdminController {
      * Description : deletes an admin
      *
      * ****/
+    @PreAuthorize("hasAuthority('DELETE_RAYON_ADMIN')")
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<Void> delete(@PathVariable String email){
         rayonAdminService.delete(email);

@@ -9,12 +9,6 @@ import java.util.List;
 @RequestMapping("api/v1/general-admin")
 public class GeneralAdminController {
 
-    @PostMapping("/authenticate")
-    public String Authenticate(@RequestBody GeneralAdminModel generalAdmin) {
-        return null;
-    }
-    @GetMapping("/test")
-    public void test() {
-        System.out.println("tessst");
-    }
+
+
 }
