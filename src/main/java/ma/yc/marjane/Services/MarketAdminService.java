@@ -35,7 +35,7 @@ public class MarketAdminService {
     public MarketAdminModel create(MarketAdminModel marketAdmin){
         var marketAdminExists = findMarketAdmin(marketAdmin.getEmail());
 
-        if(marketAdminExists.isPresent()) {
+        if(marketAdminExists != null) {
             log.error("Market admin with email {} already exists", marketAdmin.getEmail());
         }
 
@@ -43,8 +43,8 @@ public class MarketAdminService {
         return createdMarketAdminModel;
     }
 
-    private Optional<MarketAdminModel> findMarketAdmin(String email) {
-        Optional<MarketAdminModel> marketAdminModel = marketAdminRepository.findByEmail(email);
+    private MarketAdminModel findMarketAdmin(String email) {
+        MarketAdminModel marketAdminModel = marketAdminRepository.findByEmail(email);
         return marketAdminModel;
     }
 
@@ -57,19 +57,19 @@ public class MarketAdminService {
      **** */
 
     @Transactional
-    public Optional<MarketAdminModel> update(MarketAdminModel marketAdmin){
+    public MarketAdminModel update(MarketAdminModel marketAdmin){
         var marketAdminExists = findMarketAdmin(marketAdmin.getEmail());
 
-        if(marketAdminExists.isEmpty()){
+        if(marketAdminExists != null){
             log.error("Market admin with email " + marketAdmin.getEmail() + "doesn't exist'");
-            return Optional.empty();
+            return null;
         }
 
         if(marketAdmin.getId() == 0){
             log.error("Cannot delete Market admin without a valid id");
         }
         MarketAdminModel marketAdminModel = marketAdminRepository.save(marketAdmin);
-        return Optional.of(marketAdminModel);
+        return marketAdminModel;
     }
 
     /* ****
@@ -80,16 +80,15 @@ public class MarketAdminService {
      **** */
 
     @Transactional
-    public ResponseEntity<Void> delete(String email ){
+    public Void delete(String email ){
 
         var marketAdminExists = findMarketAdmin(email);
 
-        if(marketAdminExists.isEmpty()){
+        if(marketAdminExists != null){
             log.error("Market admin with email " + email+ "doesn't exist'");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         marketAdminRepository.deleteByEmail(email);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return null;
     }
 
     /* ****
@@ -99,12 +98,13 @@ public class MarketAdminService {
     *
       **** */
 
-    public ResponseEntity<Optional<MarketAdminModel>> read(String email) {
-        Optional<MarketAdminModel> marketAdminModel = marketAdminRepository.findByEmail(email);
-        if (marketAdminModel.isPresent()) {
-            return ResponseEntity.ok().body(marketAdminModel);
-        } else {
-            return ResponseEntity.notFound().build();
+    public MarketAdminModel read(String email) {
+        MarketAdminModel marketAdminModel = marketAdminRepository.findByEmail(email);
+
+        if(marketAdminModel != null){
+            return marketAdminModel;
+        }else {
+            return null;
         }
     }
 
@@ -114,9 +114,9 @@ public class MarketAdminService {
      * @param : Email address
      *
      **** */
-    public ResponseEntity<List<MarketAdminModel>> readAll() {
+    public List<MarketAdminModel> readAll() {
         List<MarketAdminModel> marketAdmins = marketAdminRepository.findAll();
-        return ResponseEntity.ok().body(marketAdmins);
+        return marketAdmins;
     }
 
 }

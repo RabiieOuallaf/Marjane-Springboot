@@ -56,9 +56,9 @@ public class MarketAdminController {
     @PreAuthorize("hasAuthority('UPDATE_MARKET_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody MarketAdminModel marketAdmin){
-        Optional<MarketAdminModel> updatedMarketAdminModel = marketAdminService.update(marketAdmin);
+        MarketAdminModel updatedMarketAdminModel = marketAdminService.update(marketAdmin);
 
-        if(updatedMarketAdminModel.isPresent()) {
+        if(updatedMarketAdminModel != null) {
             return ResponseEntity.ok("Market admin updated successfully");
         }else {
             return ResponseEntity.badRequest().body("Market admin updating failed, check the logs for more details");

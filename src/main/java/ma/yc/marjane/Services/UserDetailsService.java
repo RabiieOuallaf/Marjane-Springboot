@@ -47,7 +47,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         GeneralAdminDTO generalAdminDTO = generalAdminService.read(email);
         RayonAdminDTO rayonAdminDTO = rayonAdminService.read(email);
-        ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
+        MarketAdminModel marketAdminModel = marketAdminService.read(email);
 
 
 

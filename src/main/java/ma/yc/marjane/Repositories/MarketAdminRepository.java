@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface MarketAdminRepository extends JpaRepository<MarketAdminModel, Serial> {
-    Optional<MarketAdminModel> findByEmail(String email);
+    MarketAdminModel findByEmail(String email);
     void deleteByEmail(String email);
 
 }
