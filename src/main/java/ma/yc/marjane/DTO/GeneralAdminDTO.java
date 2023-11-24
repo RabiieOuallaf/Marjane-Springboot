@@ -14,4 +14,5 @@ public class GeneralAdminDTO {
     String email;
     String fullname;
     String password;
+    String role;
 }

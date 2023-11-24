@@ -16,6 +16,7 @@ public class GeneralAdminService {
     /*
      Find general admin by email
      */
+
     public GeneralAdminDTO read(String email) {
         GeneralAdminModel generalAdminModel= generalAdminRepository.readByEmail(email);
         if(generalAdminModel != null) {

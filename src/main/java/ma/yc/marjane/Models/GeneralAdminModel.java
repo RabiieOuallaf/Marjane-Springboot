@@ -30,12 +30,16 @@ public class GeneralAdminModel {
     @Column(name = "password")
     private String password;
 
+    @Basic
+    @Column(name = "role")
+    private String role;
     public String toString() {
         return "GeneralAdminstratorModel{" +
                 "id=" + id +
                 ", fullname='" + fullname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\''+
                 '}';
     }
 

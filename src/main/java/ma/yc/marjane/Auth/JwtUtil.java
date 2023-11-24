@@ -5,12 +5,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import ma.yc.marjane.Models.GeneralAdminModel;
 import ma.yc.marjane.Models.MarketAdminModel;
 import ma.yc.marjane.Models.RayonAdminModel;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.naming.AuthenticationException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
@@ -27,23 +29,27 @@ public class JwtUtil {
     }
 
     public String createToken(Object admin) {
+
         if(admin instanceof GeneralAdminModel){
+
             GeneralAdminModel generalAdmin = (GeneralAdminModel)admin;
             Claims claims = Jwts.claims().setSubject(generalAdmin.getEmail());
             claims.put("fullName", generalAdmin.getFullname());
-            claims.put("role", "GENERAL_ADMIN");
+            claims.put("role", generalAdmin.getRole());
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
             return Jwts.builder()
                     .setClaims(claims)
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
                     .setExpiration(tokenValidity)
                     .signWith(SignatureAlgorithm.HS256, secret_key)
                     .compact();
+
         }else if(admin instanceof RayonAdminModel) {
             RayonAdminModel rayonAdminModel = (RayonAdminModel)admin;
             Claims claims = Jwts.claims().setSubject(rayonAdminModel.getEmail());
             claims.put("fullaname", rayonAdminModel.getFullname());
-            claims.put("role", "RAYON_ADMIN");
+            claims.put("roles", "RAYON_ADMIN");
 
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
@@ -57,7 +63,7 @@ public class JwtUtil {
             MarketAdminModel marketAdmin = (MarketAdminModel) admin;
             Claims claims = Jwts.claims().setSubject(marketAdmin.getEmail());
             claims.put("fullname", marketAdmin.getFullname());
-            claims.put("role", "MARKET_ADMIN");
+            claims.put("roles", "MARKET_ADMIN");
 
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
@@ -71,47 +77,32 @@ public class JwtUtil {
             throw new IllegalArgumentException("Unsupported admin type");
         }
     }
-    private Claims parseJwtClaims(String token) {
-        return jwtParser.parseClaimsJws(token).getBody();
+
+    public String getEmail(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
-    private Claims resolveClaim(HttpServletRequest  req) {
-        try {
-            String token = resolveToken(req);
-            if(token != null) {
-                return parseJwtClaims(token);
-            }
-            return null;
-        } catch (ExpiredJwtException e) {
-            req.setAttribute("expired", e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            req.setAttribute("Invalid", e.getMessage());
-            throw e;
-        }
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
-    private String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader(TOKEN_HEADER);
-        if(bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)){
-            return bearerToken.substring(TOKEN_PREFIX.length());
-        };
-        return null;
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secret_key).parseClaimsJws(token).getBody();
     }
 
-    private boolean validateClaims(Claims claims) throws AuthenticationException {
-        try {
-            return claims.getExpiration().after(new Date());
-        } catch(Exception e) {
-            throw e;
-        }
+    public String getRoles(String token)  {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+    public boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
     }
 
-    public String getEmail(Claims claims) {
-        return claims.getSubject();
-    }
-
-    public List<String> getRoles(Claims claims)  {
-        return (List<String>) claims.get("roles");
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String email = getEmail(token);
+        return (email.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 }

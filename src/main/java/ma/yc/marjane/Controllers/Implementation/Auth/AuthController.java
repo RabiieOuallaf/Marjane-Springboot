@@ -1,4 +1,5 @@
 package ma.yc.marjane.Controllers.Implementation.Auth;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ma.yc.marjane.Auth.JwtUtil;
 import ma.yc.marjane.DTO.GeneralAdminDTO;
@@ -15,12 +16,8 @@ import ma.yc.marjane.Services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -49,7 +46,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResDTO> performAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginReqDTO.getEmail());
-
         if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {
             String email = userDetails.getUsername();
 
@@ -57,7 +53,7 @@ public class AuthController {
                 GeneralAdminDTO generalAdmin = generalAdminService.read(email);
                 if (generalAdmin != null) {
 
-                    GeneralAdminModel generalAdminModel = new GeneralAdminModel().builder().email(email).build();
+                    GeneralAdminModel generalAdminModel = new GeneralAdminModel().builder().email(generalAdmin.getEmail()).role(generalAdmin.getRole()).build();
                     String token = jwtUtil.createToken(generalAdminModel);
                     LoginResDTO loginResDTO = new LoginResDTO(email, token);
 

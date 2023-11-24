@@ -1,10 +1,13 @@
 package ma.yc.marjane.Controllers.Implementation.Adminstration;
 
+import jakarta.annotation.security.RolesAllowed;
 import ma.yc.marjane.Models.MarketAdminModel;
 import ma.yc.marjane.Services.MarketAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +35,6 @@ public class MarketAdminController {
     * Description : create a new admin market
     *
      * ****/
-
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody MarketAdminModel marketAdmin){
         Optional<MarketAdminModel> createdMarketAdmin= marketAdminService.create(marketAdmin);
@@ -49,7 +51,6 @@ public class MarketAdminController {
      * Description : update an existing admin market
      *
      * ****/
-
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody MarketAdminModel marketAdmin){
         Optional<MarketAdminModel> updatedMarketAdminModel = marketAdminService.update(marketAdmin);
