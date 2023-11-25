@@ -88,8 +88,13 @@ public class PromotionService {
             ProductModel updatedProductDTO = ProductMapper.productMapper.toEntity(productModelToUpdate);
             updatedProductDTO.setCategory(productModelToUpdate.getCategoryModel());
             ProductDTO updatedProduct = productService.update(updatedProductDTO);
+            if(updatedProduct != null) {
+                delete(promotionId);
+                return updatedProduct;
+            }else {
+                return null;
+            }
 
-            return updatedProduct;
         } else {
             log.error("Product not found for the given promotion");
             return null;
@@ -133,11 +138,22 @@ public class PromotionService {
             return null;
         }
     }
+
+    /*
+     *  Description : read all promotions
+     * @param promotionId
+     */
     public List<PromotionModel> readAll() {
         List<PromotionModel> promotionModelList =  promotionRepository.findAll();
         return promotionModelList;
     }
 
-
+    /*
+    * Description : Delete a promotion
+    * @param promotionId
+     */
+    public void delete(int promotionId) {
+        promotionRepository.deleteById(promotionId);
+    }
 
 }

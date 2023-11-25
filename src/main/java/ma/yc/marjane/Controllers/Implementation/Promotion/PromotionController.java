@@ -66,7 +66,13 @@ public class PromotionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
     }
-
+    /* ****
+     *
+     * POST /api/v1/promotion/read/{param}
+     * Definition : this method reads and returns a promotion by category id
+     * @Param : category id
+     *
+     **** */
     @GetMapping("/read/{categoryId}")
     public ResponseEntity<?> read(@PathVariable int categoryId){
         if(categoryId != 0) {
@@ -81,8 +87,17 @@ public class PromotionController {
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There's an issue with the request parameters please check and try again");
         }
+    }
 
 
+    @PostMapping("/reject/{promotionId}")
+    public ResponseEntity<?> reject(@PathVariable int promotionId) {
+        if(promotionId != 0) {
+            promotionService.delete(promotionId);
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("promotion id isn't valid, please check and try again!");
+        }
+        return null;
     }
 
 
