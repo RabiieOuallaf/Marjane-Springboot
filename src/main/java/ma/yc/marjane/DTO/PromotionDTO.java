@@ -12,6 +12,4 @@ public class PromotionDTO {
     int id;
     float promotionPercentage;
     ProductModel productModel;
-
-
 }

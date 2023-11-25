@@ -8,10 +8,8 @@ import ma.yc.marjane.DTO.ProductDTO;
 import ma.yc.marjane.DTO.PromotionDTO;
 import ma.yc.marjane.Mappers.ProductMapper;
 import ma.yc.marjane.Mappers.PromotionMapper;
-import ma.yc.marjane.Models.CategoryModel;
 import ma.yc.marjane.Models.ProductModel;
 import ma.yc.marjane.Models.PromotionModel;
-import ma.yc.marjane.Models.RayonAdminModel;
 import ma.yc.marjane.Repositories.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,20 +71,22 @@ public class PromotionService {
      *
      **** */
 
-    public ProductDTO acceptPromotion(PromotionDTO promotionDTO) {
-        ProductModel productDTO = promotionDTO.getProductModel();
+    public ProductDTO acceptPromotion(int promotionId) {
+        PromotionModel promotionModel = readById(promotionId);
+        ProductModel productDTO = promotionModel.getProduct();
         ProductDTO productModelToUpdate = productService.read(productDTO.getId());
 
         if (productModelToUpdate != null) {
+
             double originalPrice = productModelToUpdate.getPrice();
-            double promotionPercentage = promotionDTO.getPromotionPercentage();
+            double promotionPercentage = promotionModel.getPromotionPercentage();
 
             double discountedPrice = originalPrice - (originalPrice * promotionPercentage / 100);
-
             productModelToUpdate.setPrice(discountedPrice);
+            System.out.println(productModelToUpdate);
 
             ProductModel updatedProductDTO = ProductMapper.productMapper.toEntity(productModelToUpdate);
-
+            updatedProductDTO.setCategory(productModelToUpdate.getCategoryModel());
             ProductDTO updatedProduct = productService.update(updatedProductDTO);
 
             return updatedProduct;
@@ -97,11 +97,11 @@ public class PromotionService {
     }
 
     /*
-    *  Description : read all promotions
-    * @param promotion
+    *  Description : read all promotions within a category
+    * @param categoryId
      */
 
-    public List<PromotionModel> read(int categoryId) {
+    public List<PromotionModel> readByCategory(int categoryId) {
         CategoryDTO category = categoryService.read(categoryId);
         List<PromotionModel> promotionModelList = readAll();
         List<ProductModel> productModelList = category.getProducts();
@@ -111,17 +111,33 @@ public class PromotionService {
             for(PromotionModel promotionModel : promotionModelList) {
                 if(promotionModel.getProduct() != null && productModel.getId() != 0) {
                     if(promotionModel.getProduct().getId() == productModel.getId()) {
+                        promotionModel.getProduct().setPromotion(null);
+                        promotionModel.getProduct().setCategory(null);
                         matchingPromotion.add(promotionModel);
                     }
                 }
             }
         }
-        System.out.println(matchingPromotion);
         return matchingPromotion;
     }
 
+    /*
+     *  Description : read a promotions by it's id
+     * @param promotionId
+     */
+    public PromotionModel readById(int promotionId) {
+        Optional<PromotionModel> promotionModel = promotionRepository.findById(promotionId);
+        if(promotionModel.isPresent()) {
+            return promotionModel.get();
+        }else {
+            return null;
+        }
+    }
     public List<PromotionModel> readAll() {
         List<PromotionModel> promotionModelList =  promotionRepository.findAll();
         return promotionModelList;
     }
+
+
+
 }

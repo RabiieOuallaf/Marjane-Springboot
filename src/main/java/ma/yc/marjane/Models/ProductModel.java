@@ -35,11 +35,9 @@ public class ProductModel {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
-    @JsonIgnore
     private CategoryModel category;
 
     @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
-    @JsonIgnore
     private PromotionModel promotion;
 
     public String toString() {

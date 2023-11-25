@@ -2,7 +2,6 @@ package ma.yc.marjane.Controllers.Implementation.Promotion;
 
 import ma.yc.marjane.DTO.ProductDTO;
 import ma.yc.marjane.DTO.PromotionDTO;
-import ma.yc.marjane.Models.ProductModel;
 import ma.yc.marjane.Models.PromotionModel;
 import ma.yc.marjane.Services.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/promotion")
@@ -45,13 +42,20 @@ public class PromotionController {
             return ResponseEntity.badRequest().body("Category creation failed, check logs for more details");
         }
     }
+    /* ****
+     *
+     * POST /api/v1/promotion/accept/{param}
+     * Definition : this method creates a new promotion
+     * @Param : promotion id
+     *
+     **** */
 
-    @PreAuthorize("hasAuthority('ACCEPT_PROMOTION')")
-    @PostMapping("/accept")
-    public ResponseEntity<String> acceptPromotion(@RequestBody PromotionDTO promotionDTO) {
+//    @PreAuthorize("hasAuthority('ACCEPT_PROMOTION')")
+    @PostMapping("/accept/{promotionId}")
+    public ResponseEntity<String> acceptPromotion(@PathVariable int promotionId) {
         try {
 
-            ProductDTO acceptedPromotion = promotionService.acceptPromotion(promotionDTO);
+            ProductDTO acceptedPromotion = promotionService.acceptPromotion(promotionId);
 
             if (acceptedPromotion != null) {
                 return ResponseEntity.ok("Promotion accepted successfully");
@@ -67,8 +71,7 @@ public class PromotionController {
     public ResponseEntity<?> read(@PathVariable int categoryId){
         if(categoryId != 0) {
 
-            List<PromotionModel> promotionModelList = promotionService.read(categoryId);
-            System.out.println(promotionModelList);
+            List<PromotionModel> promotionModelList = promotionService.readByCategory(categoryId);
             if(!promotionModelList.isEmpty()){
                 return ResponseEntity.ok(promotionModelList);
             }else {
