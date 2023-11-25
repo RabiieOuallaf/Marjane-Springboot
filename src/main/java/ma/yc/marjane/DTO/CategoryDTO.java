@@ -1,13 +1,16 @@
 package ma.yc.marjane.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import ma.yc.marjane.Models.ProductModel;
+import ma.yc.marjane.Models.RayonAdminModel;
+
+import java.util.List;
 
 
+@Data
 public class CategoryDTO {
     int id;
     String name;
-    int category_admin_id;
+    RayonAdminModel rayonAdmin;
+    List<ProductModel> products;
 }

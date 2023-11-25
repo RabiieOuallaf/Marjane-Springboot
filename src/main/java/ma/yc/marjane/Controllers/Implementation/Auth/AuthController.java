@@ -70,8 +70,8 @@ public class AuthController {
                 }
             }
             if (loginReqDTO.getType().equals("market")) {
-                ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
-                if (marketAdminModel.getBody().isPresent()) {
+                MarketAdminModel marketAdminModel = marketAdminService.read(email);
+                if (marketAdminModel != null) {
                     MarketAdminModel builtMarketAdminModel = new MarketAdminModel().builder().email(email).build();
                     String token = jwtUtil.createToken(builtMarketAdminModel);
                     LoginResDTO loginResDTO = new LoginResDTO(email, token);

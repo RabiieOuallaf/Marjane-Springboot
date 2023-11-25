@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ma.yc.marjane.Models.RayonAdminModel;
 
 @Data
 @Builder
@@ -14,5 +15,5 @@ public class RayonAdminDTO {
     String email;
     String fullname;
     String password;
-
+    RayonAdminModel rayonAdminModel;
 }

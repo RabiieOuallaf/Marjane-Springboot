@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.yc.marjane.Models.CategoryModel;
+import ma.yc.marjane.Models.PromotionModel;
 
 @Data
 @Builder
@@ -17,4 +18,5 @@ public class ProductDTO {
     private double price;
     private CategoryModel categoryModel;
     int quantity;
+    private PromotionModel promotionModel;
 }

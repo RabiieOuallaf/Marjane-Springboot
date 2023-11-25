@@ -54,7 +54,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Optional<ProductDTO> update(ProductModel productModel) {
+    public ProductDTO update(ProductModel productModel) {
         var existingProduct = findProduct(productModel.getId());
 
         if(existingProduct.isEmpty()){
@@ -66,7 +66,7 @@ public class ProductService {
         ProductModel updatedProductModel = productRepository.save(productModel);
         ProductDTO productDTO = ProductMapper.productMapper.toDTO(updatedProductModel);
 
-        return Optional.of(productDTO);
+        return productDTO;
     }
 
     /* ****

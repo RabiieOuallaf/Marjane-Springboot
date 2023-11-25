@@ -3,10 +3,12 @@ package ma.yc.marjane.Services;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.yc.marjane.DTO.CategoryDTO;
 import ma.yc.marjane.DTO.ProductDTO;
 import ma.yc.marjane.DTO.PromotionDTO;
 import ma.yc.marjane.Mappers.ProductMapper;
 import ma.yc.marjane.Mappers.PromotionMapper;
+import ma.yc.marjane.Models.CategoryModel;
 import ma.yc.marjane.Models.ProductModel;
 import ma.yc.marjane.Models.PromotionModel;
 import ma.yc.marjane.Models.RayonAdminModel;
@@ -14,6 +16,8 @@ import ma.yc.marjane.Repositories.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +27,7 @@ public class PromotionService {
     @Autowired
     private final PromotionRepository promotionRepository;
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     /* ****
      *
@@ -52,7 +57,6 @@ public class PromotionService {
                             && !("multimedia".equals(productDTO.getCategoryModel().getName()))
             ) {
                 PromotionModel createdPromotionModel = promotionRepository.save(promotionModel);
-                System.out.println("Promotion DTO" + createdPromotionModel);
                 PromotionDTO promotionDTO = PromotionMapper.promotionMapper.toDTO(createdPromotionModel);
                 return promotionDTO;
             }
@@ -61,9 +65,15 @@ public class PromotionService {
         }
         return null;
     }
+    /* ****
+     *
+     * Description : apply Promotion
+     * Helpers : findCategory(String name) method check if market category with given email already exists
+     * @param : PromotionDTO(Model) as a parameter
+     *
+     **** */
 
-
-    public Optional<Optional<ProductDTO>> acceptPromotion(PromotionDTO promotionDTO) {
+    public ProductDTO acceptPromotion(PromotionDTO promotionDTO) {
         ProductModel productDTO = promotionDTO.getProductModel();
         ProductDTO productModelToUpdate = productService.read(productDTO.getId());
 
@@ -77,16 +87,41 @@ public class PromotionService {
 
             ProductModel updatedProductDTO = ProductMapper.productMapper.toEntity(productModelToUpdate);
 
-            Optional<ProductDTO> updatedProduct = productService.update(updatedProductDTO);
+            ProductDTO updatedProduct = productService.update(updatedProductDTO);
 
-            return Optional.of(updatedProduct);
+            return updatedProduct;
         } else {
             log.error("Product not found for the given promotion");
             return null;
         }
     }
 
+    /*
+    *  Description : read all promotions
+    * @param promotion
+     */
 
-//    public PromotionDTO readAll(Integer rayonAdminId) {
-//    }
+    public List<PromotionModel> read(int categoryId) {
+        CategoryDTO category = categoryService.read(categoryId);
+        List<PromotionModel> promotionModelList = readAll();
+        List<ProductModel> productModelList = category.getProducts();
+        List<PromotionModel> matchingPromotion = new ArrayList<>();
+
+        for(ProductModel productModel : productModelList) {
+            for(PromotionModel promotionModel : promotionModelList) {
+                if(promotionModel.getProduct() != null && productModel.getId() != 0) {
+                    if(promotionModel.getProduct().getId() == productModel.getId()) {
+                        matchingPromotion.add(promotionModel);
+                    }
+                }
+            }
+        }
+        System.out.println(matchingPromotion);
+        return matchingPromotion;
+    }
+
+    public List<PromotionModel> readAll() {
+        List<PromotionModel> promotionModelList =  promotionRepository.findAll();
+        return promotionModelList;
+    }
 }

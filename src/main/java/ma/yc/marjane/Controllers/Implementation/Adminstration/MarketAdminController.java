@@ -88,9 +88,10 @@ public class MarketAdminController {
      * ****/
     @PreAuthorize("hasAuthority('READ_MARKET_ADMIN')")
     @GetMapping("/read/{email}")
-    public ResponseEntity<Optional<MarketAdminModel>> read(@PathVariable String email) {
-        ResponseEntity<Optional<MarketAdminModel>> marketAdminModel = marketAdminService.read(email);
-            return ResponseEntity.ok().body(marketAdminModel.getBody());
+    public ResponseEntity<MarketAdminDTO> read(@PathVariable String email) {
+        MarketAdminModel marketAdminModel = marketAdminService.read(email);
+        MarketAdminDTO marketAdminDTO = MarketAdminMapper.marketAdminMapper.toDTO(marketAdminModel);
+            return ResponseEntity.ok().body(marketAdminDTO);
     }
 
     /* ****

@@ -55,9 +55,9 @@ public class ProductController {
     @PreAuthorize("hasAuthority('UPDATE_PRODUCT')")
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody ProductModel productModel){
-        Optional<ProductDTO> updatedProduct = productService.update(productModel);
+        ProductDTO updatedProduct = productService.update(productModel);
 
-        if(updatedProduct.isPresent()) {
+        if(updatedProduct != null) {
             return ResponseEntity.ok("Category with name " + productModel.getName() +" And id " + productModel.getId() + "Updated successfully");
         }else {
             return ResponseEntity.badRequest().body("Category updating failed, check logs for more details");

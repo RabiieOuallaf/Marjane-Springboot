@@ -1,5 +1,6 @@
 package ma.yc.marjane.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,15 @@ public class PromotionModel {
     @Column(name = "promotion_percentage")
     private float promotionPercentage;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id" , referencedColumnName = "id")
     private ProductModel product;
+
+    public String toString() {
+        return "PromotionModel{" +
+                "id=" + id +
+                ", promotionPercentage=" + promotionPercentage +
+                ", productModel=" + (product != null ? "productModel{id=" + product.getId() + ", name='" + product.getName() + "'}" : "null") +
+                '}';
+    }
 }

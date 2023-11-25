@@ -1,10 +1,9 @@
 package ma.yc.marjane.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity(name = "ProductModel")
 @Table(name = "product")
@@ -12,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,19 +35,21 @@ public class ProductModel {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private CategoryModel category;
 
-    @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JsonIgnore
     private PromotionModel promotion;
 
-    @Override
     public String toString() {
         return "ProductModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
+                ", promotion=" + (promotion != null ? promotion : "null") +
                 ", quantity=" + quantity +
-                ", category=" + (category != null ? category.getId() : "null") +
+                ", category=" + (category != null ? category : "null") +
                 '}';
     }
 
