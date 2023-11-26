@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Component
-public class JwtUtil {
+public class                                    JwtUtil {
     private final String secret_key = "mysecretkey";
     private long accessTokenValidity = 60*60*1000;
 

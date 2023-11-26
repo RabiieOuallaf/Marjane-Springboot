@@ -15,5 +15,7 @@ public class RayonAdminDTO {
     String email;
     String fullname;
     String password;
+    String role;
+
     RayonAdminModel rayonAdminModel;
 }

@@ -1,5 +1,6 @@
 package ma.yc.marjane.Controllers.Implementation.Promotion;
 
+import lombok.RequiredArgsConstructor;
 import ma.yc.marjane.DTO.ProductDTO;
 import ma.yc.marjane.DTO.PromotionDTO;
 import ma.yc.marjane.Models.PromotionModel;
@@ -14,14 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/promotion")
-
+@RequiredArgsConstructor
 public class PromotionController {
+    @Autowired
     private final PromotionService promotionService;
 
-    @Autowired
-    public PromotionController(PromotionService promotionService) {
-        this.promotionService = promotionService;
-    }
 
     /* ****
      *
@@ -31,7 +29,6 @@ public class PromotionController {
      *
      **** */
     @PreAuthorize("hasAuthority('CREATE_PROMOTION')")
-
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody PromotionModel promotion) {
         PromotionDTO promotionDTO = promotionService.create(promotion);
@@ -50,7 +47,7 @@ public class PromotionController {
      *
      **** */
 
-//    @PreAuthorize("hasAuthority('ACCEPT_PROMOTION')")
+    @PreAuthorize("hasAuthority('ACCEPT_PROMOTION')")
     @PostMapping("/accept/{promotionId}")
     public ResponseEntity<String> acceptPromotion(@PathVariable int promotionId) {
         try {
@@ -73,6 +70,7 @@ public class PromotionController {
      * @Param : category id
      *
      **** */
+    @PreAuthorize("hasAuthority('READ_PROMOTION')")
     @GetMapping("/read/{categoryId}")
     public ResponseEntity<?> read(@PathVariable int categoryId){
         if(categoryId != 0) {
@@ -89,6 +87,7 @@ public class PromotionController {
         }
     }
 
+    @PreAuthorize("hasAuthority('REJECT_PROMOTION')")
 
     @PostMapping("/reject/{promotionId}")
     public ResponseEntity<?> reject(@PathVariable int promotionId) {

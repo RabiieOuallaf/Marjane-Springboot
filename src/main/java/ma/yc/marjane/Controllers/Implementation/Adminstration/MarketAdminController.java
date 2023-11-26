@@ -26,8 +26,6 @@ public class MarketAdminController {
     }
 
 
-
-
     /* ****
     * POST /api/v1/market-admin/create
     * Request body : MarketAdminModel
@@ -108,15 +106,5 @@ public class MarketAdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /* ****
-     * post /api/v1/market-admin/accept-promotion/{id}
-     * @param : String id
-     * Description : Accept promotion
-     *
-     * ****/
 
-//    @PostMapping("/accept/{id}")
-//    public ResponseEntity<Void> accept(@PathVariable String id) {
-//
-//    }
 }

@@ -23,13 +23,14 @@ public class MarjaneMarketModel {
     String name;
 
 
-    @OneToOne(mappedBy = "market" , cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "market" , cascade = CascadeType.PERSIST)
     private MarketAdminModel marketAdminModel;
 
     public String toString() {
         return "MarjaneMarketModel{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + name  +
+                ", market_admin=" + marketAdminModel +
                 '}';
     }
 }

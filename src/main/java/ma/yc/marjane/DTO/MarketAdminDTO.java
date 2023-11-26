@@ -13,5 +13,7 @@ public class MarketAdminDTO {
     String email;
     String fullname;
     String password;
+    String role;
+
     private MarjaneMarketModel marketModel;
 }

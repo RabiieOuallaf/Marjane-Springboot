@@ -1,5 +1,6 @@
 package ma.yc.marjane.Controllers.Implementation.Category;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.yc.marjane.DTO.CategoryDTO;
 import ma.yc.marjane.Models.CategoryModel;
@@ -16,13 +17,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/category")
 @Slf4j
+@RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryService categoryService;
-
     @Autowired
-    public CategoryController(CategoryService categoryService   ) {
-        this.categoryService = categoryService;
-    }
+    private final CategoryService categoryService;
 
     /* ****
     *
@@ -34,11 +32,10 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('CREATE_CATEGORY')")
     @PostMapping("/create")
-
     public ResponseEntity<String> create(@RequestBody CategoryModel category){
         CategoryDTO categoryDTO = categoryService.create(category);
         if(categoryDTO != null){
-            return ResponseEntity.ok("Category with name " + category.getName() +" And id " + category.getId() + "Created successfully");
+            return ResponseEntity.ok("Category with name : " + category.getName() +" And id " + category.getId() + "Created successfully");
         }else {
             return ResponseEntity.badRequest().body("Category creation failed, check logs for more details");
         }
@@ -72,7 +69,6 @@ public class CategoryController {
      * ****/
     @PreAuthorize("hasAuthority('READ_CATEGORY')")
     @GetMapping("/readAll")
-
     public ResponseEntity<List<CategoryDTO>> readAll() {
         try {
             List<CategoryDTO> categories = categoryService.readAll();
@@ -93,7 +89,6 @@ public class CategoryController {
      * ****/
     @PreAuthorize("hasAuthority('READ_CATEGORY')")
     @GetMapping("/read/{id}")
-
     public ResponseEntity<String> read(@PathVariable Integer id) {
         CategoryDTO categoryDTO = categoryService.read(id);
 

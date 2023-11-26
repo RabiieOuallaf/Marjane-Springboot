@@ -4,14 +4,11 @@ import ma.yc.marjane.DTO.GeneralAdminDTO;
 import ma.yc.marjane.DTO.RayonAdminDTO;
 import ma.yc.marjane.Models.MarketAdminModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
@@ -22,8 +19,8 @@ public class UserDetailsService implements org.springframework.security.core.use
     private final String MARKET_ADMIN_PREFIX = "MARKET_ADMIN";
     private final String RAYON_ADMIN_PREFIX = "RAYON_ADMIN";
     private final String PROMOTION_PREFIX = "PROMOTION";
-
-
+    private final String PRODUCT_PREFIX = "PRODUCT";
+    private final String CATEGORY_PREFIX = "CATEGORY";
     @Autowired
     public UserDetailsService(GeneralAdminService generalAdminService, MarketAdminService marketAdminService, RayonAdminService rayonAdminService) {
         this.generalAdminService = generalAdminService;
@@ -78,8 +75,11 @@ public class UserDetailsService implements org.springframework.security.core.use
                             .authorities(
                                     createAuthority("ACCEPT", PROMOTION_PREFIX),
                                     createAuthority("REJECT", PROMOTION_PREFIX),
-                                    createAuthority("READ", PROMOTION_PREFIX)
-
+                                    createAuthority("READ", PROMOTION_PREFIX),
+                                    createAuthority("CREATE", CATEGORY_PREFIX),
+                                    createAuthority("READ",  CATEGORY_PREFIX),
+                                    createAuthority("UPDATE", CATEGORY_PREFIX),
+                                    createAuthority("DELETE", CATEGORY_PREFIX)
                             )
                             .build();
 
@@ -93,7 +93,12 @@ public class UserDetailsService implements org.springframework.security.core.use
                             .roles("MARKET_ADMIN")
                             .authorities(
                                     createAuthority("CREATE", PROMOTION_PREFIX),
-                                    createAuthority("READ", PROMOTION_PREFIX)
+                                    createAuthority("READ", PROMOTION_PREFIX),
+                                    createAuthority("CREATE", PRODUCT_PREFIX),
+                                    createAuthority("READ", PRODUCT_PREFIX),
+                                    createAuthority("UPDATE", PRODUCT_PREFIX),
+                                    createAuthority("DELETE", PRODUCT_PREFIX)
+
                             )
                             .build();
             return userDetails;

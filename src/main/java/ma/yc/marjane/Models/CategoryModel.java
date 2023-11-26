@@ -23,7 +23,7 @@ public class CategoryModel {
     @Column(name = "name")
     String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_admin_id" , referencedColumnName = "id", foreignKey = @ForeignKey(name = "rayon_admin_fkey"))
     RayonAdminModel rayonAdmin;
 

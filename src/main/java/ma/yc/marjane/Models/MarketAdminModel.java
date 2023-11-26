@@ -33,7 +33,11 @@ public class MarketAdminModel {
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Basic
+    @Column(name = "role")
+    private String role;
+
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "market_id", referencedColumnName = "id" , foreignKey = @ForeignKey(name = "market_adminstrator_market_id_fkey"))
     private MarjaneMarketModel market;
 
@@ -44,6 +48,8 @@ public class MarketAdminModel {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", market=" + market +
+                ", role='" + role + '\''+
                 '}';
     }
 }
+

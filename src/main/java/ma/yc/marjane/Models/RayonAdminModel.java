@@ -29,7 +29,11 @@ public class RayonAdminModel {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "rayonAdmin",cascade = CascadeType.ALL)
+    @Basic
+    @Column(name = "role")
+    private String role;
+
+    @OneToOne(mappedBy = "rayonAdmin")
     private CategoryModel category;
 
     public String toString() {
@@ -39,6 +43,7 @@ public class RayonAdminModel {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", category=" + category +
+                ", role='" + role + '\''+
                 '}';
     }
 }

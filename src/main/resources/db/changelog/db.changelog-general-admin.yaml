@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_general_admin_table
+      author: rabieouallaf
+      changes:
+        - createTable:
+            tableName: general_admin
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: fullname
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: role
+                  type: VARCHAR(255)

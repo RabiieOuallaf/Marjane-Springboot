@@ -6,4 +6,5 @@ public class MarjaneMarketDTO {
     private int id;
     private String name;
     private MarketAdminModel marketAdminModel;
+
 }

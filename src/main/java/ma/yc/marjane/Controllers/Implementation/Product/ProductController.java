@@ -1,5 +1,6 @@
 package ma.yc.marjane.Controllers.Implementation.Product;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.yc.marjane.DTO.ProductDTO;
 import ma.yc.marjane.Models.ProductModel;
@@ -16,13 +17,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/product")
 @Slf4j
+@RequiredArgsConstructor
 public class ProductController {
+    @Autowired
+
     private final ProductService productService;
 
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     /* ****
      *
