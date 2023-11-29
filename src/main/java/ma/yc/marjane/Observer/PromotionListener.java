@@ -1,4 +1,5 @@
 package ma.yc.marjane.Observer;
 
-public class PromotionListener {
+public interface PromotionListener {
+    void notifyPromotion();
 }
