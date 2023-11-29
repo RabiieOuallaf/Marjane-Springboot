@@ -3,11 +3,8 @@ package ma.yc.marjane.Services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ma.yc.marjane.DTO.CategoryDTO;
 import ma.yc.marjane.DTO.ProductDTO;
-import ma.yc.marjane.Mappers.CategoryMapper;
 import ma.yc.marjane.Mappers.ProductMapper;
-import ma.yc.marjane.Models.CategoryModel;
 import ma.yc.marjane.Models.ProductModel;
 import ma.yc.marjane.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +97,8 @@ public class ProductService {
         if(!products.isEmpty()) {
             List<ProductDTO> productDTOS = new ArrayList<>();
             products.forEach(product -> {
+                product.setPromotion(null);
+                product.setCategory(null);
                 productDTOS.add(ProductMapper.productMapper.toDTO(product));
             });
             return productDTOS;

@@ -1,34 +1,31 @@
 package ma.yc.marjane.Models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Entity(name = "ClientModel")
-@Table(name = "client")
+@Entity(name = "CashierAgentModel")
+@Table(name = "cashier_agent")
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class ClientModel {
+public class CashierAgentModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int Id;
+    private int id;
 
     @Basic
     @Column(name = "fullname")
-    private String fullName;
+    private String fullname;
 
     @Basic
-    @Column(name =  "email")
+    @Column(name = "email")
     private String email;
 
     @Basic
     @Column(name = "password")
     private String password;
 
+    @Basic
+    @Column(name = "role")
+    private String role;
 
 }

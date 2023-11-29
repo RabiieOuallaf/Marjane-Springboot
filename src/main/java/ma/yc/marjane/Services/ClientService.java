@@ -29,8 +29,8 @@ public class ClientService {
     public ClientDTO create(ClientModel clientModel) {
 
         if(clientModel != null) {
-            ClientModel foundClient = findById(clientModel.getId());
-            if(foundClient != null) {
+            ClientModel foundClient = findByEmail(clientModel.getEmail());
+            if(foundClient == null) {
                 ClientModel client = clientRepository.save(clientModel);
                 return ClientMapper.clientMapper.toDTO(client);
             }else {
@@ -57,6 +57,7 @@ public class ClientService {
             return null;
         }
     }
+
 
     /*
      * Description : update an existing client
@@ -123,7 +124,7 @@ public class ClientService {
         if(clientModel == null) {
             log.warn("Couldn't find client to delete");
         }else {
-            clientRepository.deleteByEmail(email);
+            clientRepository.delete(clientModel);
         }
     }
 
