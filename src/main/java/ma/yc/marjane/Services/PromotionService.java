@@ -10,8 +10,10 @@ import ma.yc.marjane.Mappers.ProductMapper;
 import ma.yc.marjane.Mappers.PromotionMapper;
 import ma.yc.marjane.Models.ProductModel;
 import ma.yc.marjane.Models.PromotionModel;
+import ma.yc.marjane.Observer.PromotionManager;
 import ma.yc.marjane.Repositories.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class PromotionService {
     private final PromotionRepository promotionRepository;
     private final ProductService productService;
     private final CategoryService categoryService;
+    private ApplicationEventPublisher eventPublisher;
+    private PromotionManager promotionManager;
 
     /* ****
      *
@@ -56,6 +60,8 @@ public class PromotionService {
             ) {
                 PromotionModel createdPromotionModel = promotionRepository.save(promotionModel);
                 PromotionDTO promotionDTO = PromotionMapper.promotionMapper.toDTO(createdPromotionModel);
+                System.out.println(promotionDTO);
+                promotionManager.notifyPromotion();
                 return promotionDTO;
             }
         } else {
