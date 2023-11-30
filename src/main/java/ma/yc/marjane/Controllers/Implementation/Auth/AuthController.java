@@ -3,10 +3,7 @@ package ma.yc.marjane.Controllers.Implementation.Auth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.yc.marjane.Auth.JwtUtil;
-import ma.yc.marjane.DTO.GeneralAdminDTO;
-import ma.yc.marjane.DTO.LoginReqDTO;
-import ma.yc.marjane.DTO.LoginResDTO;
-import ma.yc.marjane.DTO.RayonAdminDTO;
+import ma.yc.marjane.DTO.*;
 import ma.yc.marjane.Models.GeneralAdminModel;
 import ma.yc.marjane.Models.MarketAdminModel;
 import ma.yc.marjane.Models.RayonAdminModel;
@@ -40,13 +37,12 @@ public class AuthController {
 
 
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResDTO> performAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
+    @PostMapping("/login/general-admin")
+    public ResponseEntity<LoginResDTO> performGeneralAdminAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginReqDTO.getEmail());
         if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {
             String email = userDetails.getUsername();
 
-            if (loginReqDTO.getType().equals("general")) {
                 GeneralAdminDTO generalAdmin = generalAdminService.read(email);
                 if (generalAdmin != null) {
 
@@ -56,25 +52,27 @@ public class AuthController {
 
                     return ResponseEntity.ok(loginResDTO);
                 }
-            }
-            if (loginReqDTO.getType().equals("rayon")) {
-                RayonAdminDTO rayonAdminDTO = rayonAdminService.read(email);
-                if (rayonAdminDTO != null) {
-                    RayonAdminModel rayonAdminModel = new RayonAdminModel().builder().email(email).build();
-                    String token = jwtUtil.createToken(rayonAdminModel);
-                    LoginResDTO loginResDTO = new LoginResDTO(email, token);
-                    return ResponseEntity.ok(loginResDTO);
-                }
-            }
-            if (loginReqDTO.getType().equals("market")) {
-                MarketAdminModel marketAdminModel = marketAdminService.read(email);
-                if (marketAdminModel != null) {
-                    MarketAdminModel builtMarketAdminModel = new MarketAdminModel().builder().email(email).build();
-                    String token = jwtUtil.createToken(builtMarketAdminModel);
-                    LoginResDTO loginResDTO = new LoginResDTO(email, token);
 
-                    return ResponseEntity.ok(loginResDTO);
-                }
+        } else {
+            log.warn("Invalid password");
+            return null;
+        }
+        return null;
+    }
+
+    @PostMapping("/login/rayon-admin")
+    public ResponseEntity<LoginResDTO> performRayonAdminAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginReqDTO.getEmail());
+        if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {
+            String email = userDetails.getUsername();
+
+            RayonAdminDTO rayonAdmin= rayonAdminService.read(email);
+            if (rayonAdmin != null) {
+
+                RayonAdminModel rayonAdminModel = new RayonAdminModel().builder().email(rayonAdmin.getEmail()).role(rayonAdmin.getRole()).build();
+                String token = jwtUtil.createToken(rayonAdminModel);
+                LoginResDTO loginResDTO = new LoginResDTO(email, token);
+                return ResponseEntity.ok(loginResDTO);
             }
 
         } else {
@@ -83,6 +81,30 @@ public class AuthController {
         }
         return null;
     }
+
+    @PostMapping("/login/market-admin")
+    public ResponseEntity<LoginResDTO> performMarketAdminAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginReqDTO.getEmail());
+        if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {
+            String email = userDetails.getUsername();
+
+            MarketAdminModel marketAdmin= marketAdminService.read(email);
+            if (marketAdmin != null) {
+
+                MarketAdminModel rayonAdminModel = new MarketAdminModel().builder().email(marketAdmin.getEmail()).role(marketAdmin.getRole()).build();
+                String token = jwtUtil.createToken(rayonAdminModel);
+                LoginResDTO loginResDTO = new LoginResDTO(email, token);
+                return ResponseEntity.ok(loginResDTO);
+            }
+
+        } else {
+            log.warn("Invalid password");
+            return null;
+        }
+        return null;
+    }
+
+
 
 
 }
