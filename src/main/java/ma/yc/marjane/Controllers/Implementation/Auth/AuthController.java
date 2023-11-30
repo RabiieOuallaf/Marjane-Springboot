@@ -1,5 +1,6 @@
 package ma.yc.marjane.Controllers.Implementation.Auth;
-import lombok.Getter;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.yc.marjane.Auth.JwtUtil;
 import ma.yc.marjane.DTO.GeneralAdminDTO;
@@ -17,15 +18,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @Slf4j
+@RequiredArgsConstructor
 public class AuthController {
+    @Autowired
     private final AuthenticationManager authenticationManager;
     private final GeneralAdminService generalAdminService;
     private final MarketAdminService marketAdminService;
@@ -33,15 +38,7 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
     private JwtUtil jwtUtil;
 
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager, GeneralAdminService generalAdminService, MarketAdminService marketAdminService, RayonAdminService rayonAdminService, UserDetailsService userDetailsService, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.generalAdminService = generalAdminService;
-        this.marketAdminService = marketAdminService;
-        this.rayonAdminService = rayonAdminService;
-        this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
-    }
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResDTO> performAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
