@@ -60,7 +60,6 @@ public class PromotionService {
             ) {
                 PromotionModel createdPromotionModel = promotionRepository.save(promotionModel);
                 PromotionDTO promotionDTO = PromotionMapper.promotionMapper.toDTO(createdPromotionModel);
-                System.out.println(promotionDTO);
                 promotionManager.notifyPromotion();
                 return promotionDTO;
             }

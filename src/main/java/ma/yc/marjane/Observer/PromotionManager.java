@@ -8,6 +8,6 @@ public class PromotionManager implements PromotionListener{
 
     @Override
     public void notifyPromotion() {
-        System.out.println("Promotion manager received promotion notification.");
+        System.out.println("Admin rayon received promotion notification.");
     }
 }
