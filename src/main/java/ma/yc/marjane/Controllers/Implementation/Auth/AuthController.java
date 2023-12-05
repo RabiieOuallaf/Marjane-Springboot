@@ -33,11 +33,12 @@ public class AuthController {
     private final MarketAdminService marketAdminService;
     private final RayonAdminService rayonAdminService;
     private final UserDetailsService userDetailsService;
+    @Autowired
     private JwtUtil jwtUtil;
 
 
 
-    @PostMapping("/login/general-admin")
+    @PostMapping("/general-admin")
     public ResponseEntity<LoginResDTO> performGeneralAdminAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginReqDTO.getEmail());
         if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {
@@ -60,7 +61,7 @@ public class AuthController {
         return null;
     }
 
-    @PostMapping("/login/rayon-admin")
+    @PostMapping("/rayon-admin")
     public ResponseEntity<LoginResDTO> performRayonAdminAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginReqDTO.getEmail());
         if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {
@@ -82,7 +83,7 @@ public class AuthController {
         return null;
     }
 
-    @PostMapping("/login/market-admin")
+    @PostMapping("/market-admin")
     public ResponseEntity<LoginResDTO> performMarketAdminAuthentication(@RequestBody LoginReqDTO loginReqDTO) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginReqDTO.getEmail());
         if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {

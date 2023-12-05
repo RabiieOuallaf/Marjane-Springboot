@@ -77,7 +77,7 @@ public class CashierAgentService {
     public CashierAgentDTO read(String email){
         var cashierAgent = findCashierAgent(email);
         if(cashierAgent == null) {
-            log.error("Cashier agent with email {} doesn't exist ", cashierAgent.getId());
+            log.error("Cashier agent with email {} doesn't exist " ,email);
             return null;
         }
         assert(cashierAgent != null);

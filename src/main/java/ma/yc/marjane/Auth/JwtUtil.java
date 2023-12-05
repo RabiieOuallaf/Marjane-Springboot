@@ -1,21 +1,21 @@
 package ma.yc.marjane.Auth;
 
-import io.jsonwebtoken.*;
-import jakarta.servlet.http.HttpServletRequest;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import ma.yc.marjane.Models.GeneralAdminModel;
 import ma.yc.marjane.Models.MarketAdminModel;
 import ma.yc.marjane.Models.RayonAdminModel;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.naming.AuthenticationException;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Component
-public class                                    JwtUtil {
+public class JwtUtil {
     private final String secret_key = "mysecretkey";
     private long accessTokenValidity = 60*60*1000;
 

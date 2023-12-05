@@ -1,7 +1,5 @@
 package ma.yc.marjane.Config;
 
-import io.jsonwebtoken.Jwt;
-import jakarta.servlet.http.HttpFilter;
 import ma.yc.marjane.Auth.JwtAuthenticationFilter;
 import ma.yc.marjane.Services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +39,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.csrf( csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/product/**").permitAll()
                         .requestMatchers("/api/v1/rayon-admin/**").permitAll()
                         .requestMatchers("/api/v1/market-admin/**").permitAll()
