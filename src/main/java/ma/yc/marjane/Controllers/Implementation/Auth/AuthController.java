@@ -67,10 +67,9 @@ public class AuthController {
         if (Objects.equals(loginReqDTO.getPassword(), userDetails.getPassword())) {
             String email = userDetails.getUsername();
 
-            RayonAdminDTO rayonAdmin= rayonAdminService.read(email);
+            RayonAdminModel rayonAdmin= rayonAdminService.readModel(email);
             if (rayonAdmin != null) {
-
-                RayonAdminModel rayonAdminModel = new RayonAdminModel().builder().email(rayonAdmin.getEmail()).role(rayonAdmin.getRole()).build();
+                RayonAdminModel rayonAdminModel = new RayonAdminModel().builder().email(rayonAdmin.getEmail()).role(rayonAdmin.getRole()).category(rayonAdmin.getCategory()).build();
                 String token = jwtUtil.createToken(rayonAdminModel);
                 LoginResDTO loginResDTO = new LoginResDTO(email, token);
                 return ResponseEntity.ok(loginResDTO);

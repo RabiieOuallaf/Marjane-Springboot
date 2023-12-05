@@ -89,6 +89,16 @@ public class RayonAdminService {
             return null;
         }
     }
+    public RayonAdminModel readModel(String email) {
+        Optional<RayonAdminModel> rayonAdminModel = findRayonAdmin(email);
+
+        if(rayonAdminModel.isPresent()){
+             RayonAdminModel rayonAdminModelClass = rayonAdminModel.get();
+            return rayonAdminModelClass;
+        } else {
+            return null;
+        }
+    }
 
     /* ****
      *

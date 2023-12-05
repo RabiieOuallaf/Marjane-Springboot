@@ -36,6 +36,7 @@ public class JwtUtil {
             Claims claims = Jwts.claims().setSubject(generalAdmin.getEmail());
             claims.put("fullName", generalAdmin.getFullname());
             claims.put("role", generalAdmin.getRole());
+
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
             return Jwts.builder()
@@ -47,9 +48,11 @@ public class JwtUtil {
 
         }else if(admin instanceof RayonAdminModel) {
             RayonAdminModel rayonAdminModel = (RayonAdminModel)admin;
+
             Claims claims = Jwts.claims().setSubject(rayonAdminModel.getEmail());
             claims.put("fullaname", rayonAdminModel.getFullname());
-            claims.put("roles", "RAYON_ADMIN");
+            claims.put("role", rayonAdminModel.getRole());
+            claims.put("category", rayonAdminModel.getCategory().getId());
 
             Date tokenCreatedTime = new Date();
             Date tokenValidity = new Date(tokenCreatedTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));

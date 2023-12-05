@@ -29,9 +29,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     private final String CASHIER_AGENT = "CASHIER_AGENT";
 
-
-
-
     /*
     *
     * @param String method name, prefix
@@ -109,7 +106,6 @@ public class UserDetailsService implements org.springframework.security.core.use
                                     createAuthority("READ", CASHIER_AGENT),
                                     createAuthority("UPDATE", CASHIER_AGENT),
                                     createAuthority("DELETE", CASHIER_AGENT)
-
                             )
                             .build();
             return userDetails;
@@ -124,7 +120,6 @@ public class UserDetailsService implements org.springframework.security.core.use
                                     createAuthority("READ", CLIENT_PREFIX),
                                     createAuthority("UPDATE", CLIENT_PREFIX),
                                     createAuthority("DELETE", CLIENT_PREFIX)
-
                             )
                             .build();
             return userDetails;
