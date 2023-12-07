@@ -1,5 +1,6 @@
 package ma.yc.marjane.Controllers.Implementation.Category;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.yc.marjane.DTO.CategoryDTO;
@@ -89,7 +90,7 @@ public class CategoryController {
      * ****/
     @PreAuthorize("hasAuthority('READ_CATEGORY')")
     @GetMapping("/read/{id}")
-    public ResponseEntity<String> read(@PathVariable Integer id) {
+    public ResponseEntity<String> read(@PathVariable Integer id) throws JsonProcessingException {
         CategoryDTO categoryDTO = categoryService.read(id);
 
         if(categoryDTO != null){

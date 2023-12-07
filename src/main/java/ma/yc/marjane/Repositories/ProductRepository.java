@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<ProductModel, Integer> {
     Optional<ProductModel> findById(Integer id);
     void deleteById(Integer id);
+
 }

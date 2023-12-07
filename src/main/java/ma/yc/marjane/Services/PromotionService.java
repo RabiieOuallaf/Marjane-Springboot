@@ -41,7 +41,6 @@ public class PromotionService {
     @Transactional
     public PromotionDTO create(PromotionModel promotionModel) {
         ProductDTO productDTO = productService.read(promotionModel.getProduct().getId());
-
         if (productDTO != null && productDTO.getCategoryModel() != null) {
 
             if (promotionModel.getPromotionPercentage() > 50 && productDTO.getQuantity() > 20) {
@@ -92,9 +91,10 @@ public class PromotionService {
 
             ProductModel updatedProductDTO = ProductMapper.productMapper.toEntity(productModelToUpdate);
             updatedProductDTO.setCategory(productModelToUpdate.getCategoryModel());
+            promotionModel.setStatus("accepted");
+             promotionRepository.save(promotionModel);
             ProductDTO updatedProduct = productService.update(updatedProductDTO);
             if(updatedProduct != null) {
-                delete(promotionId);
                 return updatedProduct;
             }else {
                 return null;
@@ -129,6 +129,18 @@ public class PromotionService {
             }
         }
         return matchingPromotion;
+    }
+
+    public void rejectPromotion(int promotionId) {
+        PromotionModel promotionModel = promotionRepository.findById(promotionId).orElse(null);
+
+        if (promotionModel != null && "ON_HOLD".equals(promotionModel.getStatus())) {
+            promotionModel.setStatus("rejected");
+            promotionRepository.save(promotionModel);
+
+        } else {
+            log.error("Promotion not found or already accepted/rejected for the given ID: " + promotionId);
+        }
     }
 
     /*

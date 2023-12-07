@@ -50,7 +50,7 @@ public class JwtUtil {
             RayonAdminModel rayonAdminModel = (RayonAdminModel)admin;
 
             Claims claims = Jwts.claims().setSubject(rayonAdminModel.getEmail());
-            claims.put("fullaname", rayonAdminModel.getFullname());
+            claims.put("fullname", rayonAdminModel.getFullname());
             claims.put("role", rayonAdminModel.getRole());
             claims.put("category", rayonAdminModel.getCategory().getId());
 

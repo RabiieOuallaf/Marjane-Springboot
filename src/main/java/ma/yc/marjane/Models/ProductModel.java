@@ -24,7 +24,6 @@ public class ProductModel {
 
     @Basic
     @Column(name = "price")
-
     private double price;
 
     @Basic

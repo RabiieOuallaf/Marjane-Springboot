@@ -88,11 +88,9 @@ public class CategoryService {
 
     public CategoryDTO read(Integer id) {
         Optional<CategoryModel> categoryModel = findCategory(id);
-            System.out.println(categoryModel + "<== category model");
         if(categoryModel.isPresent()) {
             CategoryModel category = categoryModel.get();
             CategoryDTO categoryDTO = CategoryMapper.categoryMapper.toDTO(category);
-
             return categoryDTO;
         }else {
             return null;

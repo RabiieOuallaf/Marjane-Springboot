@@ -92,7 +92,7 @@ public class PromotionController {
     @PostMapping("/reject/{promotionId}")
     public ResponseEntity<?> reject(@PathVariable int promotionId) {
         if(promotionId != 0) {
-            promotionService.delete(promotionId);
+            promotionService.rejectPromotion(promotionId);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("promotion id isn't valid, please check and try again!");
         }
