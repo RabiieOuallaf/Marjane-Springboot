@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -129,6 +130,16 @@ public class PromotionService {
             }
         }
         return matchingPromotion;
+    }
+
+    public List<PromotionModel> readByStatus(String status) {
+        return readAll().stream()
+                .filter(promotionModel -> promotionModel.getProduct() != null && promotionModel.getStatus().equals(status))
+                .peek(promotionModel -> {
+                    promotionModel.getProduct().setPromotion(null);
+                    promotionModel.getProduct().setCategory(null);
+                })
+                .collect(Collectors.toList());
     }
 
     public void rejectPromotion(int promotionId) {
